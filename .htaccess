@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /ciapp/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]  
+AuthUserFile e:/.htpasswd
+AuthName "Supreme Data Services"
+AuthType Basic
+<Limit GET POST>
+require valid-user
+</limit>

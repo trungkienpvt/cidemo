@@ -1,0 +1,132 @@
+<?php /* Smarty version Smarty 3.1.4, created on 2011-12-20 13:08:45
+         compiled from "application/views/templates/admin\index.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:127054ef0eb4d316c88-69923861%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    'd50f013089d02d8dd1fe1795a64543055285bf0c' => 
+    array (
+      0 => 'application/views/templates/admin\\index.tpl',
+      1 => 1321300554,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '127054ef0eb4d316c88-69923861',
+  'function' => 
+  array (
+  ),
+  'variables' => 
+  array (
+    'jsPath' => 1,
+    'imagePath' => 1,
+    'MENU_TOP' => 1,
+    'MENU_LEFT' => 1,
+  ),
+  'has_nocache_code' => true,
+  'version' => 'Smarty 3.1.4',
+  'unifunc' => 'content_4ef0eb4d6cbde',
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_4ef0eb4d6cbde')) {function content_4ef0eb4d6cbde($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ("header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 9999, null, array('title'=>'foo'), 0);?>
+
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/';?>
+admin/test.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo '/*%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/';?>
+admin/niceforms.js"></script>
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/';?>
+admin/jconfirmaction.jquery.js"></script>
+
+<script type="text/javascript">
+ddaccordion.init({
+	headerclass: "submenuheader", //Shared CSS class name of headers group
+	contentclass: "submenu", //Shared CSS class name of contents group
+	revealtype: "click", //Reveal content when user clicks or onmouseover the header? Valid value: "click", "clickgo", or "mouseover"
+	mouseoverdelay: 200, //if revealtype="mouseover", set delay in milliseconds before header expands onMouseover
+	collapseprev: true, //Collapse previous content (so only one open at any time)? true/false 
+	defaultexpanded: [], //index of content(s) open by default [index1, index2, etc] [] denotes no content
+	onemustopen: false, //Specify whether at least one header should be open always (so never all headers closed)
+	animatedefault: false, //Should contents open by default be animated into view?
+	persiststate: true, //persist state of opened contents within browser session?
+	toggleclass: ["", ""], //Two CSS classes to be applied to the header when it's collapsed and expanded, respectively ["class1", "class2"]
+	togglehtml: ["suffix", "<img src='{$imagePath}images_admin/plus.gif' class='statusicon' />", "<img src='{$imagePath}images_admin/minus.gif' class='statusicon' />"], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
+	animatespeed: "fast", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
+	oninit:function(headers, expandedindices){ //custom code to run when headers have initalized
+		//do nothing
+	},
+	onopenclose:function(header, index, state, isuseractivated){ //custom code to run whenever a header is opened or closed
+		//do nothing
+	}
+})
+</script>
+
+
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		$('.ask').jConfirmAction();
+	});
+	
+</script>
+
+</head>
+<body>
+<div id="main_container">
+
+	<div class="header">
+    <div class="logo"><a href="#"><img src="<?php echo '/*%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
+/*/%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/';?>
+images_admin/logo.gif" alt="" title="" border="0" /></a></div>
+    
+    <div class="right_header">Welcome Admin, <a href="#">Visit site</a> | <a href="#" class="messages">(3) Messages</a> | <a href="#" class="logout">Logout</a></div>
+    <div id="clock_a"></div>
+    </div>
+    
+    <div class="main_content">
+    
+                    <div class="menu">
+                    <?php echo '/*%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/<?php echo $_smarty_tpl->tpl_vars[\'MENU_TOP\']->value;?>
+/*/%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/';?>
+
+                    </ul>
+                    </div> 
+                    
+                    
+                    
+                    
+    <div class="center_content">  
+    
+    
+    
+    <div class="left_content">
+    
+    		<?php echo '/*%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/<?php echo $_smarty_tpl->tpl_vars[\'MENU_LEFT\']->value;?>
+/*/%%SmartyNocache:127054ef0eb4d316c88-69923861%%*/';?>
+
+    
+    <div class="right_content">            
+        
+    <?php echo $_smarty_tpl->getSubTemplate (($_smarty_tpl->tpl_vars['layout_content']->value), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 9999, null, array(), 0);?>
+
+      
+     
+     </div><!-- end of right content-->
+            
+                    
+  </div>   <!--end of center content -->               
+                    
+                    
+    
+    
+    <div class="clear"></div>
+    </div> <!--end of main content-->
+	<div class="footer">
+    
+    	<?php echo $_smarty_tpl->getSubTemplate ("footer.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 9999, null, array(), 0);?>
+
+    
+    </div>
+
+</div>		</body>
+</html><?php }} ?>

@@ -1,0 +1,2 @@
+<div class="left_footer">IN ADMIN PANEL | Powered by <a href="">INDEZINER</a></div>
+<div class="right_footer"><a href="#"><img src="{$imagePath}images_admin/indeziner_logo.gif" alt="" title="" border="0" /></a></div>

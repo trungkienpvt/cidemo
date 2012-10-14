@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <configdata>
+    <nav>
+       <home>
+       
+          <label>Home</label>
+          <module>shopping</module>
+          <controller>index</controller>
+          <action>index</action>
+          <class>menuTop</class>
+
+       </home>
+       <about>
+          <label>About us</label>
+          <module>default</module>
+          <controller>index</controller>
+          <action>index</action>
+          <class>menuTop</class>
+       
+       </about>
+       <products>
+          <label>Products</label>
+          <module>default</module>
+          <controller>index</controller>
+          <action>index</action>
+          <class>menuTop</class>
+
+       </products>
+       <news>
+          <label>News</label>
+          <module>shopping</module>
+          <controller>category</controller>
+          <action>index</action>
+          <class>menuTop</class>
+
+       </news>
+       <contact>
+          <label>Contact </label>
+          <module>shopping</module>
+          <controller>index</controller>
+          <action>category</action>
+          <params>
+             <cid>14</cid>
+
+          </params>
+
+         
+          <class>menuTop</class>
+       </contact>
+    </nav>
+    </configdata>

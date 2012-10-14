@@ -1,0 +1,29 @@
+<?php /* Smarty version Smarty 3.1.4, created on 2011-12-20 13:12:43
+         compiled from "application/views/templates/admin\footer.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:283594ef0ec3b608f99-71846435%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '3ee9c5950d004a7e65d87d5409898c14295bf1ea' => 
+    array (
+      0 => 'application/views/templates/admin\\footer.tpl',
+      1 => 1321298285,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '283594ef0ec3b608f99-71846435',
+  'function' => 
+  array (
+  ),
+  'variables' => 
+  array (
+    'imagePath' => 1,
+  ),
+  'has_nocache_code' => true,
+  'version' => 'Smarty 3.1.4',
+  'unifunc' => 'content_4ef0ec3b61dbd',
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_4ef0ec3b61dbd')) {function content_4ef0ec3b61dbd($_smarty_tpl) {?><div class="left_footer">IN ADMIN PANEL | Powered by <a href="http://indeziner.com">INDEZINER</a></div>
+<div class="right_footer"><a href="http://indeziner.com"><img src="<?php echo '/*%%SmartyNocache:283594ef0ec3b608f99-71846435%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
+/*/%%SmartyNocache:283594ef0ec3b608f99-71846435%%*/';?>
+images_admin/indeziner_logo.gif" alt="" title="" border="0" /></a></div><?php }} ?>

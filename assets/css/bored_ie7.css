@@ -1,0 +1,74 @@
+#blog #primary {
+	width: 960px;
+}
+
+#blog .postContent h2 {
+	width: 292px;
+}
+
+#primaryFooter .icon {
+	float: left;
+	display: inline;
+}
+
+#brandsPage ul {
+	width: 960px;	
+}
+
+#l {
+	top: 30px;
+}
+
+#xl {
+	top: 54px;
+}
+
+#xxl {
+	top: 78px;
+}
+
+#primaryFooter {
+	overflow: hidden;
+}
+
+#payment .field a,
+#selectSize li a  {
+	position: relative;
+}
+
+.messageAppears {
+	padding-top: 15px;
+	overflow: visible !important;
+}
+
+#specialOffer {
+	padding-bottom: 0;
+}
+
+#newArrivals ul {	
+	padding-bottom: 20px;
+}
+
+#navigation {
+	z-index: 1000;
+}
+
+#footer .column {
+	padding-bottom: 10px;
+}
+
+#productPage #secondary .part {
+	padding-bottom: 30px;
+}
+
+#itemAdded {
+	width: 206px;
+}
+
+#changeCurrency ul {
+	padding-bottom: 10px;
+}
+
+.modal {
+	
+}

@@ -1,0 +1,17 @@
+#Sat May 19 22:29:12 ICT 2012
+eclipse.preferences.version=1
+encoding//application/controllers/admin_articles.php=UTF-8
+encoding//application/controllers/adminblock.php=UTF-8
+encoding//application/controllers/adminusers.php=UTF-8
+encoding//application/controllers/albums.php=UTF-8
+encoding//application/controllers/article.php=UTF-8
+encoding//application/controllers/base_controller.php=UTF-8
+encoding//application/controllers/captcha.php=UTF-8
+encoding//application/controllers/contacts.php=UTF-8
+encoding//application/controllers/users.php=UTF-8
+encoding//application/libraries/myutility.php=UTF-8
+encoding//application/libraries/myutility2.php=UTF-8
+encoding//application/libraries/myutility3.php=UTF-8
+encoding//application/views/templates/default/menutop.php=UTF-8
+encoding//system/libraries/StringUtility.php=UTF-8
+encoding/<project>=UTF-8

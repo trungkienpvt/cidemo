@@ -1,0 +1,59 @@
+<?php /* Smarty version Smarty 3.1.4, created on 2011-12-20 13:08:58
+         compiled from "application/views/templates/admin\header.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:64354ef0eb5a2db4f7-24548448%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '4efa7f805b715020be655f64ef38d0f5b5efae96' => 
+    array (
+      0 => 'application/views/templates/admin\\header.tpl',
+      1 => 1295151538,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '64354ef0eb5a2db4f7-24548448',
+  'function' => 
+  array (
+  ),
+  'variables' => 
+  array (
+    'title_page' => 1,
+    'cssPath' => 1,
+    'jsPath' => 1,
+  ),
+  'has_nocache_code' => true,
+  'version' => 'Smarty 3.1.4',
+  'unifunc' => 'content_4ef0eb5a348c0',
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_4ef0eb5a348c0')) {function content_4ef0eb5a348c0($_smarty_tpl) {?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title><?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'title_page\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="<?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'cssPath\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+admin_style.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'cssPath\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+admin_niceforms-default.css" />
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+admin/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+admin/ddaccordion.js"></script>
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+admin/clockp.js"></script>
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:64354ef0eb5a2db4f7-24548448%%*/';?>
+admin/jconfirmaction.jquery.js"></script>
+
+ 
+
+
+
+</head><?php }} ?>
