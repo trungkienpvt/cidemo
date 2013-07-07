@@ -24,4 +24,5 @@ $lang['PLEASE_SELECT'] = "Please select an item";
 $lang['TITL_PAGE'] = "Manage User";
 $lang['ROLE_TITLE'] = "Role";
 $lang['Save'] = "Save";
+$lang['USERNAME OR PASSWORD INVALID'] = 'Username or password invalid. PLease try again';
 ?>

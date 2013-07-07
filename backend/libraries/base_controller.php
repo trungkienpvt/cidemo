@@ -13,9 +13,9 @@ class Base_Controller extends CI_Controller
 //		$config['upload_path'] = './data/files/';
 		$this->imageConfig['allowed_types'] = 'gif|jpg|png';
 //		$config['allowed_types'] = '*';
-		$this->imageConfig['max_size']	= '10000';
-		$this->imageConfig['max_width']  = '2024';
-		$this->imageConfig['max_height']  = '2068';
+		$this->imageConfig['max_size']	= '2097152';
+		$this->imageConfig['max_width']  = '';
+		$this->imageConfig['max_height']  = '';
 	}
 	public function __construct ()
     {
@@ -123,6 +123,9 @@ class Base_Controller extends CI_Controller
     }
     function submitlogin($userName,$password)
     {
+        $langCurrent = $this->session->userdata("language");
+		$language_abbr = $this->session->userdata("language_abbr");
+		$this->lang->load('users', $langCurrent);
     	//validate form
     	$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
@@ -144,6 +147,10 @@ class Base_Controller extends CI_Controller
                 'login_id' => true, 'user_role' =>$loginResult['user_role']));
             redirect( $this->url('users/'));
         } else {
+            $message= $this->lang->line("USERNAME OR PASSWORD INVALID");
+			$message = str_replace("<p>","",$message);
+			$message = str_replace("/p","br/",$message);
+			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
             redirect( $this->url('users/'));
         }
     }

@@ -170,12 +170,19 @@ class Banner extends Base_Controller {
 			$translateStatus = $this->uri->segment ( 6 );
 		
 		}
+		$editCategory = true;
 		if (! empty ( $id )) {
 			$bannerInfo = $this->Model_Banner->getItemById ( $id );
+			//check exist translate
+			$result = $this->Model_Banner->_checkTranslate2($id, $bannerInfo['language']);
+			if(!empty($result)){
+				$editCategory = false;
+			}else{
+				$editCategory = true;
+				$wheres ['id <>'] = $id;
+				$wheres ['language'] = $bannerInfo['language'];
+			}
 			$data ['ALBUM_DATA'] = $bannerInfo;
-//									print_r($bannerInfo);exit; 
-			$wheres ['id <>'] = $id;
-			$wheres ['language '] = $bannerInfo ['language'];
 		} else {
 			$data ['ALBUM_DATA'] = null;
 		}
@@ -196,6 +203,7 @@ class Banner extends Base_Controller {
 			}
 		}
 		$data ['list_category'] = $listCategory;
+		$data ['editCategory'] = $editCategory;
 		$data ['CONTENT_DATA'] = $content_value;
 		$data ['title_page'] = $this->lang->line ( 'INDEX_TITLE_PAGE' );
 		$data ['TRANSLATE_STATUS'] = $translateStatus;
@@ -265,11 +273,15 @@ class Banner extends Base_Controller {
 		
 		} elseif($translateStatus == 1) {
 			//case translate item
+			$objData = $this->Model_Banner->getItemById($id);
+			if($objData['rid']!="")
+				$data['rid'] = (int)$objData['rid'];
+			else
+				$data['rid'] = $id;
 			$data['title'] = $title;
 			$data['links'] = $links;
 			$data['ordering'] = $ordering;
 			$data['category'] = $catId;
-			$data ['rid'] = $id;
 			$data ['language'] = $langTranslate;
 			if ($image == '' && $imageLink != '')
 				$data ['images'] = $imageLink;

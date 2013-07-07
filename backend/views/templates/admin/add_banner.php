@@ -86,6 +86,7 @@ function SetFileField( fileUrl, data )
 	    <input type="text" name="ordering" tabindex="4"   id="ordering" value="<?php print(isset($ALBUM_DATA['ordering'])?$ALBUM_DATA['ordering']:"")?>"/>
 	    </div>
 	</div>
+	<?php if($editCategory && $TRANSLATE_STATUS !=1):?>
 	<div class="control-group">
 	    <label class="control-label" for="ordering"><?php print $this->lang->line("CATEGORY")?></label>
 	    <div class="controls">
@@ -97,6 +98,9 @@ function SetFileField( fileUrl, data )
 		</select>
 	    </div>
 	</div>
+	<?php else:?>
+    <input type="hidden" name="category"  value="<?php echo $ALBUM_DATA['category']?>" />
+    <?php endif;?>
 	<div class="control-group">
     	<label class="control-label" for="email"><?php print $this->lang->line('IMAGE')?></label>
 	    <div class="controls">

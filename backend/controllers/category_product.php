@@ -69,6 +69,7 @@ class Category_Product extends Base_Controller
             $order[$orderName] = $orderValue;
         }
         $order['level'] = 'asc';
+        $wheres['level <>'] = 0;
         $categoryList = $this->Model_Category_Product->_getList('*', $page, 
         $limitPerPage, $wheres, $wheresLike, $order);
         //				print_r($categoryList);exit;
@@ -137,17 +138,21 @@ class Category_Product extends Base_Controller
             $translateStatus = $this->uri->segment(6);
         }
         $wheres = array();
-        $categoryInfo = array();
+        $editCategory = true;
         if (! empty($id)) {
             $categoryInfo = $this->Model_Category_Product->_getItemById(
             $id);
+            //check exist translate
+            $result = $this->Model_Category_Banner->_checkTranslate2($id, $categoryInfo['language']);
+            if(!empty($result)){
+            	$editCategory = false;
+            }else{
+            	$editCategory = true;
+            	$wheres ['id <>'] = $id;
+            	$wheres ['language'] = $categoryInfo['language'];
+            }
+            
             $data['category_data'] = $categoryInfo;
-            //									print_r($categoryInfo);exit; 
-            $wheres['id <>'] = $id;
-            if ($translateStatus == 1)
-                $wheres['language'] = $defaultLang;
-            else
-                $wheres['language'] = $categoryInfo['language'];
         } else {
             $data['category_data'] = null;
         }
@@ -167,6 +172,7 @@ class Category_Product extends Base_Controller
         }
         //		print_r($arrLang);exit;
         $data['category_list'] = $listCategory;
+        $data ['editCategory'] = $editCategory;
         $data['TRANSLATE_STATUS'] = $translateStatus;
         $data['layout_content'] = $this->load->view(
         "templates/" . $this->mtemplate->_template . "/add_category_product", $data, 
@@ -268,10 +274,14 @@ class Category_Product extends Base_Controller
             $data['language'] = $langCurrent;
             $dbRet = $this->Model_Category_Product->_save($data);
         } elseif ($translateStatus == 1) {
+        	$objData = $this->Model_Product->_getItemById($id);
+        	if($objData['rid']!="")
+        		$data['rid'] = (int)$objData['rid'];
+        	else
+        		$data['rid'] = $id;
             $data['name'] = $name;
             $data['parents'] = (int) $parentId;
             $data['status'] = (int) $status;
-            $data['rid'] = $id;
             if ($image == '' && $imageLink != '')
                 $data['images'] = $imageLink;
             $data['language'] = $langTranslate;

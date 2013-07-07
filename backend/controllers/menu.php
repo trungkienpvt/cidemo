@@ -80,6 +80,7 @@ class Menu extends Base_Controller {
 			$arrOrder[$orderName] = $orderValue;
 			$order[$orderName] = $orderValue;
 		}
+		$wheres['level <>'] = 0; 
 		$categoryList = $this->Model_Menu->_getList ( '*', $page, $limitPerPage, $wheres, $wheresLike, $order );
 		//		print_r($categoryList);exit;
 		$countCategory = $this->Model_Menu->_getNumItem ( $wheres, $wheresLike );
@@ -140,13 +141,19 @@ class Menu extends Base_Controller {
 		
 		}
 		$wheres = array ();
-		$menuInfo = array ();
+		$editCategory = true;
 		if (! empty ( $id )) {
 			$menuInfo = $this->Model_Menu->_getItemById ( $id );
+			//check exist translate
+			$result = $this->Model_Menu->_checkTranslate2($id, $menuInfo['language']);
+			if(!empty($result)){
+				$editCategory = false;
+			}else{
+				$editCategory = true;
+				$wheres ['id <>'] = $id;
+				$wheres ['language'] = $menuInfo['language'];
+			}	
 			$data ['menuData'] = $menuInfo;
-			//						print_r($menuInfo);exit; 
-			$wheres ['id <>'] = $id;
-			$wheres ['language <>'] = $menuInfo['language'];
 		} else {
 			$data ['menuData'] = null;
 		}
@@ -167,6 +174,7 @@ class Menu extends Base_Controller {
 		}
 		$data ['category_list'] = $listCategory;
 		$data ['TRANSLATE_STATUS'] = $translateStatus;
+		$data ['editCategory'] = $editCategory;
 		$data ['layout_content'] = $this->load->view ( "templates/" . $this->mtemplate->_template . "/add_menu", $data, true );
 		$this->load->view ( "templates/" . $this->mtemplate->_template . "/index", $data );
 	}
@@ -245,6 +253,11 @@ class Menu extends Base_Controller {
 			$data['language'] = $langCurrent;
 			$dbRet = $this->Model_Menu->_save ( $data );
 		} elseif ($translateStatus == 1) {
+			$objData = $this->Model_Menu->_getItemById($id);
+			if($objData['rid']!="")
+				$data['rid'] = (int)$objData['rid'];
+			else
+				$data['rid'] = $id;
 			$data ['name'] = $name;
 			$data ['url'] = $url;
 			$data ['parents'] = $parentId;
@@ -303,13 +316,13 @@ class Menu extends Base_Controller {
 			foreach ( $id as $item ) {
 				$result = $this->Model_Menu->getChildCategory ( $item );
 				if (!empty($result)) {
+					
 					$this->Model_Menu->removeNode($item,'node');
 				} else {
 					$this->Model_Menu->removeNode($item,'branch');
 				}
 			}
 		} else {
-			die("vao");
 			$result = $this->Model_Menu->getChildCategory ( $item );
 			if (!empty($result)) {
 				$this->Model_Menu->removeNode($id,'node');

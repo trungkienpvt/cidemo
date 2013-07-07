@@ -201,6 +201,25 @@ class Model_Category_Banner extends Nested_Set {
 	
 	}
 	
+	
+	/**
+	 * todo: check exist translate by language
+	 */
+	function _checkTranslate2($id, $language) {
+		$data = self::_getItemById ( $id );
+		$referenId = $data [$this->reference_id];
+		$this->db->select ( "*" );
+		$this->db->from ( $this->_table );
+		$this->db->where ( $this->reference_id, ( int ) $referenId );
+		$this->db->where ( 'language <>', $language );
+		$query = $this->db->get ();
+		//									    	echo $this->db->last_query();
+		//									    	  exit;
+		return $query->num_rows ();
+	
+	}
+	
+	
 	function _checkAllTranslate($id) {
 		$arrLanguage = $this->config->item ( "lang_uri_abbr" );
 		foreach ( $arrLanguage as $key => $value ) {

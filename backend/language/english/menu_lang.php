@@ -33,4 +33,5 @@ $lang['SAVE_DATA_SUCCESS'] = "Save data successfull";
 $lang['IMPORT'] = "Import";
 $lang['DELETE MENU SUCCESSFUL'] = 'Delete menu successful';
 $lang['CAN NOT DELETE ROOT MENU'] = "'Can not delete root menu" ;
+$lang['ORDERING'] = 'Ordering';
 ?>

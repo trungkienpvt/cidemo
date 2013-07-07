@@ -174,12 +174,20 @@ class Album extends Base_Controller {
 			$translateStatus = $this->uri->segment ( 6 );
 		
 		}
+		$editCategory = true;
 		if (! empty ( $id )) {
 			$albumInfo = $this->Model_Album->getItemById ( $id );
+			//check exist translate
+			$result = $this->Model_Album->_checkTranslate2($id, $albumInfo['language']);
+			if(!empty($result)){
+				$editCategory = false;
+			}else{
+				$editCategory = true;
+				$wheres ['id <>'] = $id;
+				$wheres ['language'] = $albumInfo['language'];
+			}
 			$data ['ALBUM_DATA'] = $albumInfo;
-//									print_r($albumInfo);exit; 
-			$wheres ['id <>'] = $id;
-			$wheres ['language <>'] = $albumInfo ['language'];
+
 		} else {
 			$data ['ALBUM_DATA'] = null;
 		}
@@ -200,6 +208,7 @@ class Album extends Base_Controller {
 			}
 		}
 		$data ['list_category'] = $listCategory;
+		$data ['editCategory'] = $editCategory;
 		$data ['CONTENT_DATA'] = $content_value;
 		$data ['title_page'] = $this->lang->line ( 'INDEX_TITLE_PAGE' );
 		$data ['TRANSLATE_STATUS'] = $translateStatus;
@@ -269,11 +278,15 @@ class Album extends Base_Controller {
 		
 		} elseif($translateStatus == 1) {
 			//case translate item
+			$objData = $this->Model_Album->getItemById($id);
+			if($objData['rid']!="")
+				$data['rid'] = (int)$objData['rid'];
+			else
+				$data['rid'] = $id;
 			$data['title'] = $title;
 			$data['links'] = $links;
 			$data['ordering'] = $ordering;
 			$data['category'] = $catId;
-			$data ['rid'] = $id;
 			$data ['language'] = $langTranslate;
 			if ($image == '' && $imageLink != '')
 				$data ['images'] = $imageLink;

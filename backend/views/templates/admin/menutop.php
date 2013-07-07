@@ -12,7 +12,7 @@
                 <a href="<?php print $base_url?>users/"><?php print $this->lang->line('DASHBOARD')?></a>
               </li>
               <li><a class="" href="<?php echo $base_url ?>users/index"><span><?php echo $this->lang->line('USER_MENU_TOP')?></span></a></li>
-			<li><a class="" href="<?php echo $base_url ?>aclrole/index"><span><?php echo $this->lang->line('ROLE_MENU_TOP')?></span></a></li>
+<!--			<li><a class="" href="<?php echo $base_url ?>aclrole/index"><span><?php echo $this->lang->line('ROLE_MENU_TOP')?></span></a></li>-->
 			<li><a class="" href="<?php echo $base_url ?>album/index"><span><?php echo $this->lang->line('IMAGE_MENU_TOP')?></span></a></li>
             <li><a class="" href="<?php echo $base_url ?>banner/index"><span><?php echo $this->lang->line('BANNER_MENU_TOP')?></span></a></li>
             <li><a class="" href="<?php echo $base_url ?>article/index"><span><?php echo $this->lang->line('ARTICLE_MENU_TOP')?></span></a></li>

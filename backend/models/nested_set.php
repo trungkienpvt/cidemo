@@ -902,15 +902,14 @@ class Nested_Set extends CI_Model {
 		$slqDelete = 'DELETE FROM ' . $this->_table . ' 
 					  WHERE lft BETWEEN ' . $lftNodeRemove . ' AND ' . $rgtNodeRemove;
 		$this->db->query ( $slqDelete );
-		$slqUpdateLeft = 'UPDATE ' . $this->_table . ' 
+		$sqlUpdateLeft = 'UPDATE ' . $this->_table . ' 
 						  SET lft = (lft - ' . $widthNodeRemove . ')  
 						  WHERE lft > ' . $rgtNodeRemove;
-		$this->db->query ( $slqUpdateLeft );
-		
-		$slqUpdateRight = 'UPDATE ' . $this->_table . ' 
+		$this->db->query ( $sqlUpdateLeft );
+		$sqlUpdateRight = 'UPDATE ' . $this->_table . ' 
 						  SET rgt = (rgt - ' . $widthNodeRemove . ')  
 						  WHERE rgt > ' . $rgtNodeRemove;
-		$this->db->query ( $slqUpdateRight );
+		$this->db->query ( $sqlUpdateRight );
 	
 	}
 	

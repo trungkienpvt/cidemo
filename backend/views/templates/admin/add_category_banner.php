@@ -53,7 +53,7 @@ $(document).ready(function()
     <input type="text" name="name" placeholder="<?php print $this->lang->line("CATEGORY_NAME")?>" id="name" size="54" tabindex="1" value="<?php echo (isset($category_data['name'])?$category_data['name']:"")?>" />
    </div>
     </div>
-    <?php if($TRANSLATE_STATUS!=1):?>
+    <?php if($editCategory && $TRANSLATE_STATUS !=1):?>
     <div class="control-group">
     <label class="control-label" for="parents"><?php print $this->lang->line('CATEGORY_PARENT')?></label>
     <div class="controls">

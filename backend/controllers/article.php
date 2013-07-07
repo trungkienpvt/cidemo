@@ -170,12 +170,19 @@ class Article extends Base_Controller {
 			$translateStatus = $this->uri->segment ( 6 );
 		
 		}
+		$editCategory = true;
 		if (! empty ( $id )) {
 			$articleInfo = $this->Model_Article->getItemById ( $id );
+			//check exist translate
+			$result = $this->Model_Article->_checkTranslate2($id, $articleInfo['language']);
+			if(!empty($result)){
+				$editCategory = false;
+			}else{
+				$editCategory = true;
+				$wheres ['id <>'] = $id;
+				$wheres ['language'] = $articleInfo['language'];
+			}
 			$data ['ARTICLE_DATA'] = $articleInfo;
-			//						print_r($categoryInfo);exit; 
-			$wheres ['id <>'] = $id;
-			$wheres ['language <>'] = $articleInfo ['language'];
 		} else {
 			$data ['ARTICLE_DATA'] = null;
 		}
@@ -196,6 +203,7 @@ class Article extends Base_Controller {
 			}
 		}
 		$data ['list_category'] = $listCategory;
+		$data ['editCategory'] = $editCategory;
 		$data ['CONTENT_DATA'] = $content_value;
 		$data ['title_page'] = $this->lang->line ( 'INDEX_TITLE_PAGE' );
 		$data ['TRANSLATE_STATUS'] = $translateStatus;
@@ -268,13 +276,17 @@ class Article extends Base_Controller {
 		
 		} elseif($translateStatus == 1) {
 			//case translate item
+			$objData = $this->Model_Article->getItemById($id);
+			if($objData['rid']!="")
+			    $data['rid'] = (int)$objData['rid'];
+			else
+			    $data['rid'] = $id;
 			$data['title'] = $title;
 			$data['description'] = $description;
 			$data['content'] = $content;
 			$data['ordering'] = $ordering;
 			$data['createdate'] = time();
 			$data['category'] = $catId;
-			$data ['rid'] = $id;
 			$data ['language'] = $langTranslate;
 			if ($image == '' && $imageLink != '')
 				$data ['images'] = $imageLink;

@@ -196,7 +196,7 @@ class Model_Language extends CI_Model {
 	}
 	
 	/**
-	 * todo: get item by rid
+	 * check to translate by language
 	 */
 	function _checkTranslate($id, $language) {
 		$data = self::_getItemById ( $id );
@@ -208,6 +208,23 @@ class Model_Language extends CI_Model {
 		$query = $this->db->get ();
 //									    	echo $this->db->last_query();
 //									    	  exit;
+		return $query->num_rows ();
+	
+	}
+	
+	/**
+	 * todo: check to translate by language
+	 */
+	function _checkTranslate2($id, $language) {
+		$data = self::_getItemById ( $id );
+		$referenId = $data [$this->reference_id];
+		$this->db->select ( "*" );
+		$this->db->from ( $this->table_name );
+		$this->db->where ( $this->reference_id, ( int ) $referenId );
+		$this->db->where ( 'language <>', $language );
+		$query = $this->db->get ();
+		//									    	echo $this->db->last_query();
+		//									    	  exit;
 		return $query->num_rows ();
 	
 	}

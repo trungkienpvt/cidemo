@@ -61,7 +61,7 @@ $(document).ready(function()
    </div>
     </div>
     
-    <?php if($TRANSLATE_STATUS!=1):?>
+    <?php if($editCategory && $TRANSLATE_STATUS !=1):?>
     <div class="control-group">
     <label class="control-label" for="parents"><?php print $this->lang->line('PARENT')?></label>
     <div class="controls">

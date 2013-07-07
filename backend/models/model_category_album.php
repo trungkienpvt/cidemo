@@ -177,6 +177,24 @@ class Model_Category_Album extends Nested_Set {
 		$query = $this->db->get ();
 		return $query->num_rows ();
 	}
+	
+	/**
+	 * todo: check exist translate by language
+	 */
+	function _checkTranslate2($id, $language) {
+		$data = self::_getItemById ( $id );
+		$referenId = $data [$this->reference_id];
+		$this->db->select ( "*" );
+		$this->db->from ( $this->_table );
+		$this->db->where ( $this->reference_id, ( int ) $referenId );
+		$this->db->where ( 'language <>', $language );
+		$query = $this->db->get ();
+		//									    	echo $this->db->last_query();
+		//									    	  exit;
+		return $query->num_rows ();
+	
+	}
+	
 	/**
 	 * Todo: change parent of item
 	 * @param $language

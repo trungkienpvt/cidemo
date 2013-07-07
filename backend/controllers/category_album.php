@@ -69,6 +69,7 @@ class Category_Album extends Base_Controller
             $arrOrder[$orderName] = $orderValue;
             $order[$orderName] = $orderValue;
         }
+        $wheres['level <>'] = 0;
         $categoryList = $this->Model_Category_Album->_getList('*', $page, $limitPerPage, 
         $wheres, $wheresLike, $order);
         //		print_r($categoryList);exit;
@@ -86,7 +87,6 @@ class Category_Album extends Base_Controller
         $data['CATEGORY_LIST'] = $categoryList;
         $data['array_lang'] = $arrLang;
         $number_row = $countCategory;
-        $strRow = array();
         $list = $this->Model_Category_Album->_getList("*", $page, $limitPerPage, $wheres, 
         $wheresLike, $order);
         for ($i = 0; $i < count($list); $i ++) {
@@ -137,14 +137,20 @@ class Category_Album extends Base_Controller
             $translateStatus = $this->uri->segment(6);
         }
         $wheres = array();
-        $categoryInfo = array();
+        $editCategory = true;
         if (! empty($id)) {
             $categoryInfo = $this->Model_Category_Album->_getItemById(
             $id);
+            //check exist translate
+            $result = $this->Model_Category_Album->_checkTranslate2($id, $categoryInfo['language']);
+            if(!empty($result)){
+            	$editCategory = false;
+            }else{
+            	$editCategory = true;
+            	$wheres ['id <>'] = $id;
+            	$wheres ['language'] = $categoryInfo['language'];
+            }
             $data['category_data'] = $categoryInfo;
-            //						print_r($categoryInfo);exit; 
-            $wheres['id <>'] = $id;
-            $wheres['language <>'] = $categoryInfo['language'];
         } else {
             $data['category_data'] = null;
         }
@@ -163,6 +169,7 @@ class Category_Album extends Base_Controller
             }
         }
         $data['category_list'] = $listCategory;
+        $data ['editCategory'] = $editCategory;
         $data['TRANSLATE_STATUS'] = $translateStatus;
         $data['layout_content'] = $this->load->view(
         "templates/" . $this->mtemplate->_template . "/add_category_album", $data, true);
@@ -265,9 +272,13 @@ class Category_Album extends Base_Controller
             $data['language'] = $langCurrent;
             $dbRet = $this->Model_Category_Album->_save($data);
         } elseif ($translateStatus == 1) {
+        	$objData = $this->Model_Category_Album->_getItemById($id);
+        	if($objData['rid']!="")
+        		$data['rid'] = (int)$objData['rid'];
+        	else
+        		$data['rid'] = $id;
             $data['name'] = $name;
             $data['status'] = $status;
-            $data['rid'] = $id;
             $data['parents'] = $parentId;
             if ($image == '' && $imageLink != '')
                 $data['images'] = $imageLink;

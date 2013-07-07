@@ -32,4 +32,5 @@ $lang['SAVE_DATA_SUCCESS'] = "Lưu dữ liệu thành công";
 $lang['IMPORT'] = "Nhập tin tức";
 $lang['DELETE MENU SUCCESSFUL'] = 'Xóa menu thành công';
 $lang['CAN NOT DELETE ROOT MENU']= 'Không thể xóa menu gốc'; 
+$lang['ORDERING'] = 'Thứ tự';
 ?>

@@ -22,4 +22,5 @@ $lang['PLEASE_SELECT'] = "Vui lòng chọn đối tượng để thao tác";
 $lang['TITL_PAGE'] = "Quản lý người dùng";
 $lang['ROLE_TITLE'] = "Nhóm";
 $lang['Save'] = "Lưu";
+$lang['USERNAME OR PASSWORD INVALID'] = 'Tên người dùng hay mật khẩu không đúng. Vui long nhập lại';
 ?>

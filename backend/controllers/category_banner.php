@@ -68,6 +68,7 @@ class Category_Banner extends Base_Controller
             $arrOrder[$orderName] = $orderValue;
             $order[$orderName] = $orderValue;
         }
+        $wheres['level <>'] = 0;
         $categoryList = $this->Model_Category_Banner->_getList('*', $page, $limitPerPage, 
         $wheres, $wheresLike, $order);
         //		print_r($categoryList);exit;
@@ -135,14 +136,21 @@ class Category_Banner extends Base_Controller
             $translateStatus = $this->uri->segment(6);
         }
         $wheres = array();
-        $categoryInfo = array();
+        $editCategory = true;
         if (! empty($id)) {
             $categoryInfo = $this->Model_Category_Banner->_getItemById(
             $id);
+            //check exist translate
+            $result = $this->Model_Category_Banner->_checkTranslate2($id, $categoryInfo['language']);
+            if(!empty($result)){
+            	$editCategory = false;
+            }else{
+            	$editCategory = true;
+            	$wheres ['id <>'] = $id;
+            	$wheres ['language'] = $categoryInfo['language'];
+            }
+            
             $data['category_data'] = $categoryInfo;
-            //						print_r($categoryInfo);exit; 
-            $wheres['id <>'] = $id;
-            $wheres['language <>'] = $categoryInfo['language'];
         } else {
             $data['category_data'] = null;
         }
@@ -161,6 +169,7 @@ class Category_Banner extends Base_Controller
             }
         }
         $data['category_list'] = $listCategory;
+        $data ['editCategory'] = $editCategory;
         $data['TRANSLATE_STATUS'] = $translateStatus;
         $data['layout_content'] = $this->load->view(
         "templates/" . $this->mtemplate->_template . "/add_category_banner", $data, true);
@@ -263,6 +272,11 @@ class Category_Banner extends Base_Controller
             $data['language'] = $langCurrent;
             $dbRet = $this->Model_Category_Banner->_save($data);
         } elseif ($translateStatus == 1) {
+        	$objData = $this->Model_Category_Banner->_getItemById($id);
+        	if($objData['rid']!="")
+        		$data['rid'] = (int)$objData['rid'];
+        	else
+        		$data['rid'] = $id;
             $data['name'] = $name;
             $data['status'] = $status;
             $data['rid'] = $id;

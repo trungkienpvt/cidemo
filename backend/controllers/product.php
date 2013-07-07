@@ -171,12 +171,19 @@ class Product extends Base_Controller {
 			$translateStatus = $this->uri->segment ( 6 );
 		
 		}
+		$editCategory = true;
 		if (! empty ( $id )) {
 			$productInfo = $this->Model_Product->getItemById ( $id );
+			//check exist translate
+			$result = $this->Model_Product->_checkTranslate2($id, $productInfo['language']);
+			if(!empty($result)){
+				$editCategory = false;
+			}else{
+				$editCategory = true;
+				$wheres ['id <>'] = $id;
+				$wheres ['language'] = $productInfo['language'];
+			}
 			$data ['PRODUCT_DATA'] = $productInfo;
-			//						print_r($categoryInfo);exit; 
-			$wheres ['id <>'] = $id;
-			$wheres ['language '] = $productInfo ['language'];
 		} else {
 			$data ['PRODUCT_DATA'] = null;
 		}
@@ -197,6 +204,7 @@ class Product extends Base_Controller {
 			}
 		}
 		$data ['list_category'] = $listCategory;
+		$data ['editCategory'] = $editCategory;
 		$data ['CONTENT_DATA'] = $content_value;
 		$data ['title_page'] = $this->lang->line ( 'INDEX_TITLE_PAGE' );
 		$data ['TRANSLATE_STATUS'] = $translateStatus;
@@ -271,6 +279,11 @@ class Product extends Base_Controller {
 		
 		} elseif($translateStatus == 1) {
 			//case translate item
+			$objData = $this->Model_Product->getItemById($id);
+			if($objData['rid']!="")
+				$data['rid'] = (int)$objData['rid'];
+			else
+				$data['rid'] = $id;
 			$data['name'] = $name;
 			$data['description'] = $description;
 			$data['content'] = $content;
@@ -278,7 +291,6 @@ class Product extends Base_Controller {
 			$data['price'] = $price;
 			$data['createdate'] = time();
 			$data['category'] = $catId;
-			$data ['rid'] = $id;
 			$data ['language'] = $langTranslate;
 			if ($image == '' && $imageLink != '')
 				$data ['images'] = $imageLink;
