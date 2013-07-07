@@ -76,6 +76,7 @@ class Base_Controller extends CI_Controller
 	    	$this->session->set_userdata(array('language_abbr' =>$default_abbr ));
         	$this->session->set_userdata(array('language' =>$lang_uri_abbr[$default_abbr] ));
 	    }
+//	    die($this->session->userdata("language"));
 	    $this->lang->load('block', $this->session->userdata("language"));
      }
     public function configMail()
@@ -110,13 +111,15 @@ class Base_Controller extends CI_Controller
 		$this->lang->load('users', $langCurrent);
         $data = array();
         $this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
-        $this->load->library('myutility3');
-        $convertVN = new MyUtility3();
+        $this->load->library('myutility');
+        $convertVN = new MyUtility();
         $title_page = '';
-        $view = $this->mtemplate->preView();
-        $view->assign('title_page', "User Login", true);
-        $view->display('login.tpl');
-        exit;
+        $preData = $this->mtemplate->getData();
+		$data = array();
+		$data['PREDATA'] = $preData;
+		$data['title_page'] = "User Login";
+		$view =$this->load->view("templates/" . $this->mtemplate->_template . "/login",$data,true);
+		echo $view;exit;
     }
     function submitlogin($userName,$password)
     {
@@ -128,9 +131,12 @@ class Base_Controller extends CI_Controller
 		if ($this->form_validation->run() == FALSE)
 		{
 			$message=validation_errors();
+			$message = str_replace("<p>","",$message);
+			$message = str_replace("/p","br/",$message);
 			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
 			redirect( $this->url('users/login/'));
 		}
+		
 	    $this->load->model('Model_Users');
         $loginResult = $this->Model_Users->login($userName, $password);
         if (!empty($loginResult)) {
@@ -163,6 +169,23 @@ class Base_Controller extends CI_Controller
     	
     	}
     }
-    
+	public function _previewphoto() {
+		//update path tmp
+		$this->load->library ( 'upload', $this->imageConfig );
+		$imagePreviewWidth = $this->config->item ( 'image_preview_width' );
+		$imagePreviewHeight = $this->config->item ( 'image_preview_height' );
+		if (! $this->upload->previewPhoto ( 'userfile', $imagePreviewWidth, $imagePreviewHeight )) {
+			$json ['status'] = 0;
+			$json ['issue'] = $this->upload->display_errors ( '', '' );
+		
+		} else {
+			$json ['status'] = 1;
+			foreach ( $this->upload->data () as $k => $v ) {
+				$json [$k] = $v;
+			}
+		
+		}
+		echo json_encode ( $json );
+	}
 
 }

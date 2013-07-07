@@ -1,0 +1,10 @@
+/* WRITE YOUR CSS CODE HERE */
+.form-search{
+	float:right;
+}
+.form-add{
+	margin-top:10px;
+}
+input.ordering{
+	width:20px;
+}

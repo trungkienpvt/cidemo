@@ -29,11 +29,11 @@ $config['lang_uri_abbr'] = array("es" => "spanish", "en" => "english", "vi" => "
 /* hide the language segment (use cookie) */
 $config['lang_ignore'] = TRUE; 
 $config['current_language'] = FALSE;
-$config['base_url']	= 'http://ciapp/';
+$config['base_url']	= 'http://localhost/ciapp/';
 $config['themes']	= 'default';
-$config['themes_css']	= $config['base_url']."assets/css/";
-$config['themes_js']	= $config['base_url']."assets/js/";
-$config['themes_image']	= $config['base_url']."assets/images/";
+$config['themes_css']	= $config['base_url']."assets/frontend/css/";
+$config['themes_js']	= $config['base_url']."assets/frontend/js/";
+$config['themes_image']	= $config['base_url']."assets/frontend/images/";
 $config['library_path']	= $config['base_url']."application/libraries/";
 $config['system_font']	= $config['base_url']."system/fonts/";
 $config['limit_of_page']	= 8;
@@ -87,8 +87,8 @@ $config['smtp_pass'] = 'googletk11';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
-//$config['index_page'] = '';
+//$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 $config['nice_url'] = true;
 
 /*
@@ -154,7 +154,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
@@ -424,4 +424,6 @@ $config['proxy_ips'] = '';
 /* End of file config.php */
 /* Location: ./application/config/config.php */
 $config['key_service'] = "123456";
+
+$config['enable_csrf_protection'] = TRUE;
 

@@ -13,7 +13,7 @@ class Block extends CI_Model
     /**
      * generate right header
      */
-	public function rightHeader($arrConfig = array(), &$smarty = null)
+	public function rightHeader($arrConfig = array())
     {
     	if($this->config->item('index_page')=="") {
     		$basePath = $arrConfig['basePath']; 
@@ -61,8 +61,7 @@ class Block extends CI_Model
         $arrConfig['data'] = $arrReturn;
         $data = $this->load->view("templates/" . $arrConfig['template'] . "/right_header", 
 		$arrConfig, true);
-		if($smarty!=null)
-			$smarty->assign("RIGHT_HEADER",$data,true);
+		return $data;
     }
     
     /**
@@ -74,15 +73,16 @@ class Block extends CI_Model
      * @param $str
      */
     
-    public function menuTop ($arrConfig = array(), &$smarty = null)
+    public function menuTop ($arrConfig = array())
     {
     	$this->load->library("StringUtility");
     	$objString = new StringUtility();
     	$arrConfig['obj_string'] = $objString;
     	$wheres = array();
 		$wheres['language'] = $arrConfig['language'];
+		$wheres['level <>'] = 0;
     	$objCategory = new Model_Category_Product();
-    	$categoryList = $objCategory->getList('*',0, 0, $wheres );
+    	$categoryList = $objCategory->_getList('*',0, 0, $wheres );
     	$arrConfig['data'] = $categoryList;
     	$classVideoList = '';
 		$classUserInfo = '';
@@ -101,11 +101,10 @@ class Block extends CI_Model
 		$arrConfig['arrClassLink'] = $arrClassLink;
     	$data = $this->load->view("templates/" . $arrConfig['template'] . "/menutop", 
 		$arrConfig, true);
-		if($smarty!=null)
-			$smarty->assign("MENU_TOP",$data,true);
+		return $data;
     	
     }
-    public function menuLeft ($arrConfig, &$smarty = null)
+    public function menuLeft ($arrConfig)
     {
     	
     	$wheres = array();
@@ -119,8 +118,7 @@ class Block extends CI_Model
     	$arrData['data'] = $strRow;
     	$data = $this->load->view("templates/" . $arrConfig['template'] . "/menuleft", 
 		$arrData, true);
-		if($smarty!=null)
-			$smarty->assign("LEFT_CONTENT",$data,true);
+		return $data;
     	
     	
     }
@@ -130,29 +128,41 @@ class Block extends CI_Model
      * @param unknown_type $table
      * @param unknown_type $lang
      */
-    public function menuRight ($arrConfig, &$smarty = null)
+    public function menuRight ($arrConfig)
     {
     	$data = $this->load->view("templates/" . $arrConfig['template'] . "/menuright", 
 		$arrConfig, true);
-		if($smarty!=null)
-			$smarty->assign("MENU_RIGHT",$data,true);
+		return $data;
     	
     	
         
+    }
+	public function header ($arrConfig)
+    {
+    	$data = $this->load->view("templates/" . $arrConfig['template'] . "/header", 
+		$arrConfig, true);
+		return $data;
+    }
+    
+	public function headerTop ($arrConfig)
+    {
+    	$menuLang = self::rightHeader($arrConfig);
+    	$arrConfig['menuLang'] = $menuLang;
+    	$data = $this->load->view("templates/" . $arrConfig['template'] . "/headerTop", 
+		$arrConfig, true);
+		return $data;
     }
     
     
     /*
      * todo: generate banner
      */
-    public function banner($arrConfig, &$smarty = null) {
+    public function banner($arrConfig) {
     	$wheres= array();
-    	$this->load->model('Model_Banners');
-    	$model = new Model_Banners();
+    	$this->load->model('Model_Banner');
+    	$model = new Model_Banner();
 		$limitPerPage=$this->config->item('limit_of_page');
-		$bannerList = $this->Model_Banners->getList('*',0,$limitPerPage, $wheres);
-		if($smarty!=null)
-			$smarty->assign("BANNER_LIST",$bannerList,true);
+		$bannerList = $this->Model_Banner->getList('*',0,$limitPerPage, $wheres);
 		return $bannerList;	
     	
     }
@@ -161,7 +171,7 @@ class Block extends CI_Model
      * todo: get computer which access site
      * 
      */
-    public function getComputerInfo($arrConfig, &$smarty = null) {
+    public function getComputerInfo($arrConfig) {
     	$this->load->library("my_utility");
     	$ip=$_SERVER['REMOTE_ADDR'];
 		$myCountryName = $this->my_utility->GetCountryByIP($ip,PATH_ROOT . DS . 'data' . DS . 'files' . DS . 'ip-to-country.csv');
@@ -171,8 +181,7 @@ class Block extends CI_Model
 		$arrConfig['contry_name'] = $myCountryName;
 		$data = $this->load->view("templates/" . $arrConfig['template'] . "/computer-info", 
 		$arrConfig, true);
-		if($smarty!=null)
-			$smarty->assign("COMPUTER_INFO",$data,true);
+		return $data;
 		
     	
     }

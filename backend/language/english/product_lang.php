@@ -11,7 +11,7 @@ $lang['ORDERING_TITLE'] = "Order";
 $lang['CATEGORY_TITLE'] = "Category";
 
 /*MANAGE ARTICLE*/
-$lang['INDEX_TITLE_PAGE'] = "Manage Product";
+$lang['INDEX_PAGE_TITLE'] = "Manage Product";
 $lang['TITLE_TITLE'] = "Title";
 $lang['DESCRIPTION_TITLE'] = "Description";
 $lang['CONTENT_TITLE'] = "Content";
@@ -37,6 +37,9 @@ $lang['CART_LIST'] = "Cart list";
 $lang['TRANSLATED_STATUS'] = "Translated";
 $lang['TRANSLATE_STATUS'] = "Translate";
 $lang['SAVE_DATA_SUCCESS'] = "Save data successfull";
+$lang['ALL'] = 'All';
 /*SEARCH PAGE*/
-$lang['SEARCH_TITLE_PAGE'] = "Search Product"
+$lang['SEARCH_TITLE_PAGE'] = "Search Product";
+
+
 ?>

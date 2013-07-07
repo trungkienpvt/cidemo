@@ -11,7 +11,7 @@ $lang['ORDERING_TITLE'] = "Thứ tự";
 $lang['CATEGORY_TITLE'] = "Danh mục";
 
 /*MANAGE ARTICLE*/
-$lang['INDEX_TITLE_PAGE'] = "Quản lý sản phẩm";
+$lang['INDEX_PAGE_TITLE'] = "Quản lý sản phẩm";
 $lang['TITLE_TITLE'] = "Tên";
 $lang['DESCRIPTION_TITLE'] = "Đặc tả";
 $lang['CONTENT_TITLE'] = "nội dung";
@@ -34,7 +34,9 @@ $lang['CHOICE_TITLE'] = "--Chọn--";
 $lang['TRANSLATED_STATUS'] = "Đã dịch";
 $lang['TRANSLATE_STATUS'] = "Chưa dịch";
 $lang['SAVE_DATA_SUCCESS'] = "Lưu dữ liệu thành công";
+$lang['ALL'] = 'Tất cả';
 /*SEARCH PAGE*/
-$lang['SEARCH_TITLE_PAGE'] = "Tìm kiếm sản phẩm"
+$lang['SEARCH_TITLE_PAGE'] = "Tìm kiếm sản phẩm";
+$lang['Translated'] = 'Đã dịch';
 
 ?>

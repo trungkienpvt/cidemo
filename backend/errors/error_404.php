@@ -4,14 +4,12 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>404 - Annanta.com</title>
 		<script type="text/javascript" src="http://localhost/ciapp/assets/js/jquery.pngFix.js"></script> 
-		
 		<!-- Active pngfix -->
 		<script type="text/javascript"> 
     		$(document).ready(function(){ 
       		$(document).pngFix(); 
     	}); 
 		</script> 
-		
 	</head>
 <body>
 

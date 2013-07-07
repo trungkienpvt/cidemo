@@ -16,9 +16,11 @@
 $obj_string = new StringUtility(); 
 $articleName = $obj_string->removeunicode($row['title']);
 $articleName = str_replace(' ',"-",$articleName).'.html'; 
-$linkUrl = $base_url . '/news/'. $row['idArticle']. '/' . $articleName; 
+$linkUrl = $PREDATA['basePath'] . 'news/'. $row['rid']. '/' . $articleName; 
 ?>
-<tr><td><?php echo $row['title']?></td><td><img src="<?php echo $image_upload_link . 'thumb/' . $row['image']?>"/></td><td><a href="javascript:void()" onclick="window.opener.importLink('<?php echo $linkUrl?>');window.close();"><?php 	echo $this->lang->line("IMPORT_LINK")?></a></td></tr>
+<tr><td><?php echo $row['title']?></td>
+<td><img src="<?php echo $PREDATA['imageUpload'] . 'thumb/' . $row['images']?>"/></td>
+<td><a href="javascript:void()" onclick="window.opener.importLink('<?php echo $linkUrl?>');window.close();"><?php 	echo $this->lang->line("IMPORT_LINK")?></a></td></tr>
 <?php endforeach;?>
 <tr><td colspan="3"><?php echo $paging?></td></tr>
 </tbody>

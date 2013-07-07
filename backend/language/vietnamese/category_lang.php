@@ -27,4 +27,5 @@ $lang['CATEGORY_IMAGE'] = "Hình ảnh";
 $lang['TRANSLATED_STATUS'] = "Đã dịch";
 $lang['TRANSLATE_STATUS'] = "Chưa dịch";
 $lang['SAVE_DATA_SUCCESS'] = "Lưu dữ liệu thành công";
+$Lang['ORDERING'] = "Thứ tự";
 ?>

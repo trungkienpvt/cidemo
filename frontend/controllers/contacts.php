@@ -3,7 +3,6 @@ require_once(APPPATH.'libraries/front_controller.php');
 class Contacts extends Front_Controller {
 	public function form_validates()	
 	{
-		
 		$config = array(
                array(
                      'field'   => 'emailfrom',
@@ -58,7 +57,13 @@ class Contacts extends Front_Controller {
 		if($this->form_validates() == FALSE)
 		{
 			$message=validation_errors();
-			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
+			$arrMessage['emailfrom'] = form_error('emailfrom');
+			$arrMessage['emailto'] = form_error('emailto');
+			$arrMessage['subject'] = form_error('subject');
+			$arrMessage['message'] = form_error('message');
+			$message = str_replace ( "<p>", "", $message );
+			$message = str_replace ( "/p", "br/", $message );
+			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error", 'array_error_message'=>$arrMessage));
 			redirect($this->url('contacts/index'));
 			
 		}
@@ -87,12 +92,12 @@ class Contacts extends Front_Controller {
 		redirect($this->url('contacts/index'));
 		
 	}
-	
 	public function index()
 	{
 		$captchaWord = $this->session->userdata('captcha_word');
 		$langCurent = $this->session->userdata("language");
 		$language_abbr = $this->session->userdata("language_abbr");
+		$this->load->helper('form');
 		$this->lang->load('contact', $langCurent);
 		$this->load->library('ckeditor'); 
 		$this->load->library('ckfinder');
@@ -112,26 +117,19 @@ class Contacts extends Front_Controller {
 		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurent));
 		$this->load->library('my_utility');
 		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$view->assign('title_page',$this->lang->line('PAGE_TITLE'),true);
-		$view->assign('layout_content','contact.tpl',true);
-		//Load language key
-		$view->assign('PAGE_TITLE',$this->lang->line('PAGE_TITLE'),true);
-		$view->assign('TITLE_TITLE',$this->lang->line('TITLE_TITLE'),true);
-		$view->assign('EMAIL_FROM_TITLE',$this->lang->line('EMAIL_FROM_TITLE'),true);
-		$view->assign('EMAIL_TO_TITLE',$this->lang->line('EMAIL_TO_TITLE'),true);
-		$view->assign('MESSAGE_TITLE',$this->lang->line('MESSAGE_TITLE'),true);
-		$view->assign('CONTACT_INFO_TITLE',$this->lang->line('CONTACT_INFO_TITLE'),true);
-		$view->assign('SUBMIT_TITLE',$this->lang->line('SUBMIT_TITLE'),true);
-		$view->assign('SUBJECT_TITLE',$this->lang->line('SUBJECT_TITLE'),true);
-		$view->assign('CAPTCHA_TITLE',$this->lang->line('CAPTCHA_TITLE'),true);
-		$view->assign('MESSAGE_DATA',$content_value,true);
-		$view->assign('BREAD_CRUMB',$breadCrumb,true);
-		$view->display('index.tpl');
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['BREAD_CRUMB'] = $breadCrumb;
+		$data['PAGINATION_STRING'] = $this->pagination->create_links();
+		$data['PREDATA'] = $preData;
+		$data['PAGE_TITLE'] = $this->lang->line('PRODUCT_LIST');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['CLICK_TO_FULL_IMAGE'] = $this->lang->line('CLICK_TO_FULL_IMAGE');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('middle');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/contact", 
+		$data, true);
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
 	}	
-	
-
-	
-		
+			
 }
 

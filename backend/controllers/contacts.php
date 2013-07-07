@@ -96,7 +96,6 @@ class Contacts extends Base_Controller {
 	
 	public function index()
 	{
-		
 		$captchaWord = $this->session->userdata('captcha_word');
 		$lang = $this->session->userdata("language");
 		$language_abbr = $this->session->userdata("language_abbr");

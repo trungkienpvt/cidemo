@@ -23,4 +23,5 @@ $lang['ERROR_MESSAGE_UPLOAD'] = "Upload image fail. Please try again";
 $lang['PLEASE_SELECT'] = "Please select an item";
 $lang['TITL_PAGE'] = "Manage User";
 $lang['ROLE_TITLE'] = "Role";
+$lang['Save'] = "Save";
 ?>

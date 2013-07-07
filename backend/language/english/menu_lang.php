@@ -1,8 +1,8 @@
 <?php
 $lang['TITLE_PAGE'] = "Manage Menu"; 
-$lang['MENU_NAME'] = "Name";
-$lang['MENU_LINK'] = "Link";
-$lang['MENU_PARENT'] = "Parent";
+$lang['NAME'] = "Name";
+$lang['LINK'] = "Link";
+$lang['PARENT'] = "Parent";
 $lang['MENU_STATUS'] = "Status";
 $lang['MENU_LANGUAGE'] = "Language";
 $lang['MENU_TAB'] = "Tab";
@@ -14,7 +14,7 @@ $lang['ADD_MENU_PAGE_TITLE'] = "Add Menu";
 $lang['SELECT_STATUS_TITLE'] = "Select status";
 $lang['ACTIVE_TITLE'] = "Active";
 $lang['UNACTIVE_TITLE'] = "Unactive";
-$lang['UPLOAD_TITLE'] = "Upload";
+$lang['ADD_TITLE'] = "Add menu";
 $lang['SUBMIT_TITLE'] = "Submit";
 $lang['IMPORT_TITLE'] = "Import";
 $lang['STATUS_TITLE'] = "Status";
@@ -30,4 +30,7 @@ $lang['TRANSLATED_STATUSS'] = "Translated";
 $lang['TRANSLATE_STATUS'] = "Translate";
 $lang['TRANSLATED_STATUS'] = "Translated";
 $lang['SAVE_DATA_SUCCESS'] = "Save data successfull";
+$lang['IMPORT'] = "Import";
+$lang['DELETE MENU SUCCESSFUL'] = 'Delete menu successful';
+$lang['CAN NOT DELETE ROOT MENU'] = "'Can not delete root menu" ;
 ?>

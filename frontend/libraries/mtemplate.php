@@ -15,11 +15,18 @@ class MTemplate extends CI_Controller
 	public $middle = '';
 	public $activeLink = '';
 	public $current_language = false; 
+	public $menuTop = '';
+	public $menuLeft = '';
+	public $menuRight = '';
+	public $righHeader="";
+	public $banner = '';
 	public function __construct ($arrConfig)
     {
     	parent::__construct();
     	//check load image captcha
     	global $URI, $CFG;
+		//get menu top
+		$this->load->model('MMenu');
 		$config =& $CFG->config;
         $index_page    = $config['index_page'];
         $defaultAbbr  = $config['language_abbr'];
@@ -43,14 +50,11 @@ class MTemplate extends CI_Controller
     		if(!empty($index_page))
     		{
     			$this->baseUrl = $this->config->item('base_url') . $index_page . '/' . $langAbbr . '/';
-    			
     		}
     		else 
     		{
     			$this->baseUrl = $this->config->item('base_url') . $langAbbr . '/';
     		}
-    		
-    		
     	}
     	else {
     		if(!empty($index_page)) {
@@ -78,33 +82,11 @@ class MTemplate extends CI_Controller
 		$this->fileUpload=$this->config->item('file_upload_link');
 		return true;
     }
-    public function preView($messageArray=array())
-    {
-//    	$this->output->enable_profiler(TRUE);
-//		echo($errMessage);exit;
-		$this->load->library('smarty');
-		$this->load->library('my_utility');
+    //get data for template
+    public function getData(){
+    	$this->load->library('my_utility');
 		$this->lang->load('menutop', $this->language);
 		$this->lang->load('languages', $this->language);
-		$smarty = new CI_Smarty();
-		$smarty->setTemplate($this->_template);
-		//$smarty->force_compile = true;
-		$smarty->debugging = false;
-		$smarty->caching = true;
-		$smarty->cache_lifetime = 120;
-		//get menu top
-		$this->load->model('MMenu');
-		$cssPath = $this->config->item('themes_css');
-		$jsPath = $this->config->item('themes_js');
-		$imagePath = $this->config->item('themes_image');
-		$imageUpload = $this->imageUpload;
-		$indexPage = $this->config->item('index_page'); 
-		$smarty->assign('baseUrl',$this->baseUrl,true);
-		$smarty->assign('basePath',$this->basePath,true);
-		$smarty->assign('cssPath',$cssPath,true);
-		$smarty->assign('jsPath',$jsPath,true);
-		$smarty->assign('imagePath',$imagePath,true);
-		$smarty->assign('imageUpload',$imageUpload,true);
 		//load block
 		$arrConfig = array();
 		$arrConfig['basePath'] = $this->basePath;
@@ -117,62 +99,40 @@ class MTemplate extends CI_Controller
 		$arrConfig['activeLink'] = $this->activeLink;
 		$arrConfig['middle_link'] = $this->middle;
 		$arrConfig['objLang'] = $this->lang;
+		$arrConfig['COUNT_ITEM_CART'] = $this->config->item('count_cart');
+		$arrConfig['CART_LINK_HEADER'] = $this->lang->line("CART_LINK_HEADER");
     	if($this->current_language) {
     		$arrConfig['language_abbr'] = $this->lang_uri_abbr;
-			
 		}
 		else {
 			$arrConfig['language_abbr'] = '';
 		}
 		//load blocks		
 		$objBlock = new Block();
-		$objBlock->menuTop($arrConfig, $smarty);
-		$objBlock->menuLeft($arrConfig, $smarty);
-		$objBlock->menuRight($arrConfig, $smarty);
-		$objBlock->rightHeader($arrConfig, $smarty);
-		$objBlock->banner($arrConfig, $smarty);
-//		$objBlock->getComputerInfo($arrConfig, $smarty);
-		$smarty->assign("COMPUTER_INFO",'',true);
+		$arrData = array();
+		$arrData['HEADER'] = $objBlock->header($arrConfig);
+		$arrData['HEADER_TOP'] = $objBlock->headerTop($arrConfig);
+		$arrData['MENU_TOP'] = $objBlock->menuTop($arrConfig);
+		$arrData['MENU_LEFT'] = $objBlock->menuLeft($arrConfig);
+		$arrData['MENU_RIGHT'] = $objBlock->menuRight($arrConfig);
+		$arrData['RIGHT_HEADER'] = $objBlock->rightHeader($arrConfig);
+		$arrData['BANNER'] = $objBlock->banner($arrConfig);
+		$arrData['MIDDLE_LINK'] = $this->middle;
+		
+		//add global variable
+		$arrData['basePath'] = $this->basePath;
+		$arrData['base_url'] = $this->baseUrl;
+		$arrData['cssPath'] = $this->cssPath;
+		$arrData['jsPath'] = $this->jsPath;
+		$arrData['imagePath'] = $this->imagePath;
+		$arrData['imageUpload'] = $this->imageUpload;
 		//get user access info
-		
-		$smarty->assign("MIDDLE_LINK",$this->middle,true);
-		$smarty->assign("CART_LINK_HEADER",$this->lang->line("CART_LINK_HEADER"),true);
-		$smarty->assign("ITEM_TITLE",$this->lang->line("ITEM_TITLE"),true);
-        $smarty->assign("COUNT_ITEM_CART",$this->config->item('count_cart'),true);
-		$smarty->assign("MENU_LEFT",0,true);
-		$smarty->assign("BANNER_TOP",0,true);
-		$smarty->assign("MESSAGE_SYSTEM_CONTENT",$this->config->item('message_content'),true);
-		$smarty->assign("MESSAGE_SYSTEM_TYPE",$this->config->item('message_type'),true);
-		return $smarty;
-		
-	}
-	
-//load ajax view
-	public function loadAjax()
-	{
-		global $URI, $CFG;
-		$this->load->library('smarty');
-		$smarty = new CI_Smarty();
-		$smarty->setTemplate($this->_template);
-		//$smarty->force_compile = true;
-		$smarty->debugging = false;
-		$smarty->caching = true;
-		$smarty->cache_lifetime = 120;
-		//get menu top
-		$cssPath = $this->config->item('themes_css');
-		$jsPath = $this->config->item('themes_js');
-		$imagePath = $this->config->item('themes_image');
-		$imageUpload = $this->imageUpload;
-		$base_url = $this->basePath;
-		$data=array();
-		$smarty->assign('baseUrl',$base_url,true);
-		$smarty->assign('cssPath',$cssPath,true);
-		$smarty->assign('jsPath',$jsPath,true);
-		$smarty->assign('imagePath',$imagePath,true);
-		$smarty->assign('imageUpload',$imageUpload,true);
-		return $smarty;
-		
-	}
+		$arrData['ITEM_TITLE'] = $this->lang->line("ITEM_TITLE");
+		$arrData['MESSAGE_SYSTEM_CONTENT'] = $this->config->item('message_content');
+		$arrData['MESSAGE_SYSTEM_TYPE'] = $this->config->item('message_type');
+		$arrData['ERROR_VALIDATE_MESSAGE'] = $this->config->item('arrErrorMessage');
+		return $arrData;
+    }
 
 }
 ?>

@@ -36,9 +36,8 @@
 |  $autoload['packages'] = array(APPPATH.'third_party', '/usr/local/shared');
 |
 */
-
 $autoload['packages'] = array();
-$autoload['libraries'] = array('database', 'session', 'pagination', 'smarty');
+$autoload['libraries'] = array('database', 'session', 'pagination');
 
 /*
 | -------------------------------------------------------------------

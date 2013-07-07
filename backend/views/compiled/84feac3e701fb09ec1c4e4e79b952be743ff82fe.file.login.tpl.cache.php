@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty 3.1.4, created on 2012-09-16 08:59:47
+<?php /* Smarty version Smarty 3.1.4, created on 2013-03-18 06:05:38
          compiled from "../backend/views/templates/admin\login.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:184125055f773c3c593-29924455%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:311051471122b0c9c4-37355998%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -11,7 +11,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '184125055f773c3c593-29924455',
+  'nocache_hash' => '311051471122b0c9c4-37355998',
   'function' => 
   array (
   ),
@@ -25,18 +25,18 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   ),
   'has_nocache_code' => true,
   'version' => 'Smarty 3.1.4',
-  'unifunc' => 'content_5055f773da81c',
+  'unifunc' => 'content_51471122c4e5f',
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_5055f773da81c')) {function content_5055f773da81c($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ("header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 9999, null, array('title'=>'foo'), 0);?>
+<?php if ($_valid && !is_callable('content_51471122c4e5f')) {function content_51471122c4e5f($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ("header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 9999, null, array('title'=>'foo'), 0);?>
 
-<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 admin/test.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+<script language="javascript" type="text/javascript" src="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 admin/niceforms.js"></script>
-<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+<script type="text/javascript" src="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'jsPath\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 admin/jconfirmaction.jquery.js"></script>
 
 
@@ -53,24 +53,24 @@ admin/jconfirmaction.jquery.js"></script>
 <div id="main_container">
 
 	<div class="header_login">
-    <div class="logo"><a href="#"><img src="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+    <div class="logo"><a href="#"><img src="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 images_admin/logo.gif" alt="" title="" border="0" /></a></div>
-    <?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php if ($_smarty_tpl->tpl_vars[\'MESSAGE_SYSTEM_CONTENT\']->value!=\'\'){?>/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+    <?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php if ($_smarty_tpl->tpl_vars[\'MESSAGE_SYSTEM_CONTENT\']->value!=\'\'){?>/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
     
     <div style="clear:both"></div>        
-    <div id="messageSystem" class="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'MESSAGE_SYSTEM_TYPE\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
-"><?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'MESSAGE_SYSTEM_CONTENT\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+    <div id="messageSystem" class="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'MESSAGE_SYSTEM_TYPE\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
+"><?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'MESSAGE_SYSTEM_CONTENT\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 </div>    
-    <?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php }?>/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+    <?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php }?>/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 
     </div>
 	     <div class="login_form">
          <h3>Admin Panel Login</h3>
-         <form action="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+         <form action="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 users/submitlogin" method="post" class="niceform">
          
                 <fieldset>
@@ -101,8 +101,8 @@ users/submitlogin" method="post" class="niceform">
     <div class="footer_login">
     
     	<div class="left_footer_login">IN ADMIN PANEL | Powered by <a href="#">INDEZINER</a></div>
-    	<div class="right_footer_login"><a href=""><img src="<?php echo '/*%%SmartyNocache:184125055f773c3c593-29924455%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
-/*/%%SmartyNocache:184125055f773c3c593-29924455%%*/';?>
+    	<div class="right_footer_login"><a href=""><img src="<?php echo '/*%%SmartyNocache:311051471122b0c9c4-37355998%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
+/*/%%SmartyNocache:311051471122b0c9c4-37355998%%*/';?>
 images_admin/indeziner_logo.gif" alt="" title="" border="0" /></a></div>
     
     </div>

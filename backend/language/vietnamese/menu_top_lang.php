@@ -8,5 +8,5 @@ $lang['PRODUCT_MENU_TOP'] = "Quản lý sản phẩm";
 $lang['ARTICLE_MENU_TOP'] = "Quản lý bài viết";
 $lang['CONTACT_MENU_TOP'] = "Liên lạc";
 $lang['MENU_MENU_TOP'] = "Quản lý liên kết";
-
+$lang['Online shopping'] = "Cửa hàng trực tuyến";
 ?>

@@ -16,7 +16,7 @@ class NL_Checkout
 	private $merchant_site_code = '23294'; //100001 chỉ là ví dụ, bạn hãy thay bằng mã của bạn
 
 	// Mật khẩu giao tiếp giữa website của bạn và NgânLượng.vn.
-	private $secure_pass= '841531tk'; //d685739bf1 chỉ là ví dụ, bạn hãy thay bằng mật khẩu của bạn
+	private $secure_pass= 'nl841531@tk'; //d685739bf1 chỉ là ví dụ, bạn hãy thay bằng mật khẩu của bạn
 	// Nếu bạn thay đổi mật khẩu giao tiếp trong quản trị website của chức năng tích hợp thanh toán trên NgânLượng.vn, vui lòng update lại mật khẩu này trên website của bạn
 	
 	private $affiliate_code = ''; //Mã đối tác tham gia chương trình liên kết của NgânLượng.vn

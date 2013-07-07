@@ -1,12 +1,12 @@
 <?php
 $lang['TITLE_PAGE'] = "Danh sách Menu"; 
-$lang['MENU_NAME'] = "Tiêu đề";
-$lang['MENU_LINK'] = "Đường liên kết";
-$lang['MENU_PARENT'] = "Menu cha";
-$lang['MENU_STATUS'] = "Trạng thái";
-$lang['MENU_LANGUAGE'] = "Ngôn ngữ";
+$lang['NAME'] = "Tiêu đề";
+$lang['LINK'] = "Đường liên kết";
+$lang['PARENT'] = "Menu cha";
+$lang['STATUS'] = "Trạng thái";
+$lang['LANGUAGE'] = "Ngôn ngữ";
 $lang['MENU_TAB'] = "Thứ tự";
-$lang['MENU_TYPE'] = "Kiểu menu";
+$lang['TYPE'] = "Kiểu menu";
 $lang['EDIT_TITLE'] = "Sửa";
 $lang['DELETE_TITLE'] = "Xóa";
 /*##################-ADD MENU PAGE-###############*/
@@ -29,4 +29,7 @@ $lang['MENU_IMAGE'] = "Hình";
 $lang['TRANSLATE_STATUS'] = "Chưa dịch";
 $lang['TRANSLATED_STATUS'] = "Đã dịch";
 $lang['SAVE_DATA_SUCCESS'] = "Lưu dữ liệu thành công";
+$lang['IMPORT'] = "Nhập tin tức";
+$lang['DELETE MENU SUCCESSFUL'] = 'Xóa menu thành công';
+$lang['CAN NOT DELETE ROOT MENU']= 'Không thể xóa menu gốc'; 
 ?>

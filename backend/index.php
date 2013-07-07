@@ -1,5 +1,4 @@
 <?php
-
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -19,7 +18,6 @@
  *
  *
  */
-
 	define('ENVIRONMENT', 'development');
 	define('UPLOAD_FILE', '../'. realpath(dirname(__FILE__)));
 //	die(UPLOAD_FILE);

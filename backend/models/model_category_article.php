@@ -1,178 +1,233 @@
 <?php
-class Model_Category_Article extends CI_Model
-{
-	var $table_name = 'category_article';
-	var $primaryKey = 'idCategory';
+require_once "nested_set.php";
+class Model_Category_Article extends Nested_Set {
+	public $reference_id = null;
+	public $primaryKey = null;
 	function __construct() {
-	    parent::__construct();
-		$this->load->database();
-		$this->load->library('pagination');
-    }
-    function getList ($select = "*",$page=0,$limit=0, $where = array())
-    {
-    	$data=array();
-    	$this->db->select($select);
-    	$this->db->from($this->table_name);
-    	if(!empty($where ))
-    	{
-	    	foreach($where as $key=>$value)
-	    	{
-	    		$this->db->where($key,$value);	
-	    	}
-    	}
-    	if($limit!=0)
-    		$this->db->limit($limit,$page);
-    	$query=$this->db->get();
-//    	echo $this->db->last_query();  exit;
-    	foreach($query->result('array') as $row){
-        	$data[]=$row;
-        }
-        return $data;
-    }
-    function getItemById($id)
-    {
-    	$query=$this->db->get_where($this->table_name,array($this->primaryKey => $id));
-    	return $query->row_array();
-    	
-    }
-	function getNumItem($where = array()) 
-    {
-    	$this->db->select('*');
-    	$this->db->from($this->table_name);
-    	if(!empty($where ))
-    	{
-	    	foreach($where as $key=>$value)
-	    	{
-	    		$this->db->where($key,$value);	
-	    	}
-    	}
-    	$query = $this->db->get();
-    	return $query->num_rows();
-    }
-    
-	function showCategoryItem($parent_id, $lang, &$strRow, &$k, $str, $config, $arrLang = array(), $langDefault = "english", $baseUrl)
-	{
-		$translate = $this->lang->line("TRANSLATE_STATUS");
-		$translated = $this->lang->line("TRANSLATED_STATUS");
-		
-		$sql="SELECT * FROM " .  $this->table_name . " WHERE idParent=".$parent_id." and language='$lang' ORDER BY idParent";	//die($sql);
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		if (count($result))
-		{
-			foreach($result as $cate)
-			{
-				
-				//check $menu have menu child
-				$numChildMenu = self::getNumItem(array('idParent' =>$cate['idCategory']));
-				if($numChildMenu)
-				{
-					
-					$strRowTMP ="<tr >
-					<td><input type='checkbox' onclick='isChecked(this);' name='id[]' id='c_".$k."' value='"
-					.$cate['idCategory']."' /></td>   
-				  <td >".$str.$cate['catName']."</td>
-				  <td >".$cate['status']."</td>
-				  <td ><img src ='" . ($cate['images']!= NULL?$config['imageUpload'] . "thumb/".$cate['images']:$config['imagepath'] . 'no-image.jpg')."'/></td>
-				  <td >".$cate['language']."</td>";
-				foreach($arrLang as $key=>$value){
-						$rid = $cate['rid'];
-						$dataTMP = self::getItemByRID($rid, $value);
-						if(empty($dataTMP)) {
-							$strRowTMP.="<td><a href='" . $baseUrl . "category_article/add/id/" . $cate['idCategory']. "/translate/1/lang/". $value ."'>" . $translate . "</a></td>";
-						}
-						else {
-							$strRowTMP.="<td>".  $translated ."</td>";
-						}
-								
-					}	
-				$strRowTMP.="	
-				  <td><a href='" . $baseUrl . "category_article/add/id/" . $cate['idCategory'] . "'><img src='" . $config['imagepath'] . "images_admin/user_edit.png' alt='' title='' border= '0' /></a></td>
-	              <td><a href='" . $baseUrl . "category_article/delete/id/" . $cate['idCategory'] ."' class='ask'><img src='". $config['imagepath'] ."images_admin/trash.png' alt='' title='' border='0' /></a></td>
-				 </tr>";
-				$strRow[] = $strRowTMP;
-					$str_new = $str."<span class='gi'>|&mdash;</span>";
-					$k +=1;	
-					self::showCategoryItem($cate["idCategory"], $lang, $strRow, $k, $str_new, $config, $arrLang, $langDefault, $baseUrl);
+		parent::__construct ();
+		$this->_table = "category_article";
+		$this->reference_id = "rid";
+		$this->primaryKey = 'id';
+	}
+	/**
+	 * Todo: get list object
+	 * @param type $select
+	 * @param type $page
+	 * @param type $limit
+	 * @param type $where
+	 * @param type $whereLike
+	 * @return type
+	 */
+	function _getList($select = "*", $page = 0, $limit = 0, $where = array(), $whereLike = array(), $order = array(), $language = '') {
+		$data = array ();
+		$this->db->select ( $select );
+		$this->db->from ( $this->_table );
+		if (! empty ( $where )) {
+			foreach ( $where as $key => $value ) {
+				$this->db->where ( $key, $value );
+			}
+		}
+		if (! empty ( $whereLike )) {
+			$count = 1;
+			foreach ( $whereLike as $key => $value ) {
+				if ($count != 1)
+					$this->db->or_like ( $key, $value );
+				else {
+					$this->db->like ( $key, $value );
 				}
-				else
-				{
+				$count ++;
+			}
+		}
+		if ($limit != 0)
+			$this->db->limit ( $limit, $page );
+		if (! empty ( $order )) {
+			foreach ( $order as $key => $value ) {
+				$this->db->order_by ( $key, $value );
+			}
+		}
+		$query = $this->db->get ();
+//				print $this->db->last_query ();
+//				exit ();
+		foreach ( $query->result ( 'array' ) as $row ) {
+			$data [] = $row;
+		}
+		
+		return $data;
+	}
+	
+	/**
+	 * Todo: get data by id
+	 * @param type $id
+	 * @return type
+	 */
+	function _getItemById($id) {
+		$this->db->select ( "*" );
+		$this->db->from ( $this->_table );
+		$this->db->where ( $this->primaryKey, ( int ) $id );
+		$query = $this->db->get ();
+		//		        		    	echo $this->db->last_query(	);  exit;
+		
+
+		return $query->row_array ();
+	}
+	
+	/**
+	 * Todo: count item for pagination
+	 * @param type $where
+	 * @param type $whereLike
+	 * @return type
+	 */
+	function _getNumItem($where = array(), $whereLike = array()) {
+		$this->db->select ( '*' );
+		$this->db->from ( $this->_table );
+		if (! empty ( $whereLike )) {
+			$count = 1;
+			foreach ( $whereLike as $key => $value ) {
+				if ($count != 1)
+					$this->db->or_like ( $key, $value );
+				else {
+					$this->db->like ( $key, $value );
+				}
+				$count ++;
+			}
+		}
+		$query = $this->db->get ();
+		return $query->num_rows ();
+	}
+	
+	/**
+	 * Todo: delete item
+	 * @param type $id
+	 */
+	function _delete($language, $id) {
+		
+		if ($language == "" || $language == $this->languageDefault) {
+			if (is_array ( $id )) {
+				foreach ( $id as $item ) {
+					//delete data for table language
+					$this->db->where ( $this->primaryKey, $item );
+					$this->db->delete ( $this->table_language );
+					//delete data for table default
 					
-					$strRowTMP ="<tr >
-					<td><input type='checkbox' onclick='isChecked(this);' name='id[]' id='c_".$k."' value='".$cate['idCategory']."' /></td>   
-				  <td >".$str.$cate['catName']."</td>
-				  <td >".$cate['status']."</td>
-				  <td ><img src ='" . ($cate['images']!= NULL?$config['imageUpload'] . "thumb/".$cate['images']:$config['imagepath'] . 'no-image.jpg')."'/></td>
-				  <td >".$cate['language']."</td>";
-					foreach($arrLang as $key=>$value){
-						$rid = $cate['rid'];
-						$dataTMP = self::getItemByRID($rid, $value);
-						if(empty($dataTMP)) {
-							$strRowTMP.="<td><a href='" . $baseUrl . "category_article/add/id/" . $cate['idCategory']. "/translate/1/lang/". $value ."'>" . $translate . "</a></td>";
-						}
-						else {
-							$strRowTMP.="<td>". $translated ."</td>";
-						}
-								
-					}	
-				$strRowTMP.="	
-				 <td><a href='" . $baseUrl . "category_article/add/id/" . $cate['idCategory'] ."'><img src='" . $config['imagepath'] . "images_admin/user_edit.png' alt='' title = '' border = '0' /></a></td>
-	             <td><a href='" . $baseUrl . "category_article/delete/id/" . $cate['idCategory'] ."' class='ask'><img src='". $config['imagepath'] ."images_admin/trash.png' alt = '' title = '' border = '0' /></a></td>
-				 </tr>";	
-				$strRow[] = $strRowTMP;
-					$k +=1;
-				self::showCategoryItem($cate["idCategory"],$lang,$strRow,$k,$str, $config, $arrLang, $langDefault, $baseUrl);
-					
-				
+
+					$this->db->where ( $this->primaryKey, $item );
+					$this->db->delete ( $this->table_language );
+				}
+			} else {
+				$this->db->set ( $this->fieldDeleted, 1 );
+				$this->db->where ( $this->primaryKey, $id );
+				if (self::_checkExistTranslate ( $id )) {
+					$this->db->update ( $this->_table );
+				} else {
+					$this->db->delete ( $this->_table );
 				}
 			}
-			return true;
+		} else {
+			$this->db->from ( $this->table_language );
 		}
+		if (is_array ( $id ))
+			$this->db->where ( $this->primaryKey, $id );
 		else
-			return true;
+			$this->db->where_in ( $this->primaryKey, $id );
+		$this->db->delete ( $this->_table );
+	}
+	
+	function _save($data = array(), $id = 0, $referenceId = 0) {
+		try {
+			$tableName = $this->_table;
+			if ($id != 0) {
+				//				var_dump($data);exit;
+				//case to edit data
+				$this->updateNode ( $data, $id, ( int ) $data ['parents'] );
+				//				            	echo $this->db->last_query(	);  exit;
+				return $id;
+			} elseif ($referenceId != 0) {
+				//case to translate data
+				$this->_parent = ( int ) $data ['parents'];
+				$this->insertNode ( $data, ( int ) $data ['parents'], array ('position' => 'left' ) );
+				return $this->db->insert_id ();
+			} elseif(isset($data ['parents']) && $data['parents']!=0) {
+				$this->insertNode ( $data, ( int ) $data ['parents'], array ('position' => 'left' ) );
+				$insertId = $this->db->insert_id ();
+				$this->db->set ( $this->reference_id, $insertId );
+				$this->db->where ( $this->primaryKey, $insertId );
+				$this->db->update ( $this->_table );
+				return $insertId;
+			}else{
+				$this->insertNode ( $data );
+				$insertId = $this->db->insert_id ();	
+				$this->db->set ( $this->reference_id, $insertId );
+				$this->db->where ( $this->primaryKey, $insertId );
+				$this->db->update ( $this->_table );
+				return $insertId;
+			}
+		} catch ( Exception $e ) {
+			return false;
+		}
+	}
+	/**
+	 * Todo: check item exist in table translating or no
+	 * @param type $id
+	 * @return type
+	 */
+	function _checkExistTranslate($id) {
+		$this->db->select ( "*" );
+		$this->db->from ( $this->_table );
+		$this->db->where ( $this->reference_id, $id );
+		$query = $this->db->get ();
+		return $query->num_rows ();
+	}
+	/**
+	 * Todo: change parent of item
+	 * @param $language
+	 * @param $oldParent
+	 * @param $newParent
+	 */
+	
+	/**
+	 * todo: get item by rid
+	 */
+	function _checkTranslate($id, $language) {
+		$data = self::_getItemById ( $id );
+		$referenId = $data [$this->reference_id];
+		$this->db->select ( "*" );
+		$this->db->from ( $this->_table );
+		$this->db->where ( $this->reference_id, ( int ) $referenId );
+		$this->db->where ( 'language', $language );
+		$query = $this->db->get ();
+		//									    	echo $this->db->last_query();
+		//									    	  exit;
+		return $query->num_rows ();
+	
+	}
+	
+	function _checkAllTranslate($id) {
+		$arrLanguage = $this->config->item ( "lang_uri_abbr" );
+		foreach ( $arrLanguage as $key => $value ) {
+			if (! self::_checkTranslate ( $id, $value ))
+				return false;
+		}
+		return true;
 	}
 	
 	/**
 	 * check category exist category child
 	 */
-	public function isExistCategoryChild($idCat)
-	{
-		$sql="SELECT * FROM " .  $this->table_name . " WHERE idParent=".$idCat;
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		if(!empty($result))
-			return true ;
+	function getChildCategory($id) {
+		$this->db->select ( '*' );
+		$table = $this->_table;
+		$this->db->from ( $table );
+		$this->db->where ( "parents", ( int ) $id );
+		$query = $this->db->get ();
+//						print($this->db->last_query());exit;
+		$result = $query->result_array ();
+		if (! empty ( $result ))
+			return true;
 		else
 			return false;
-		
+	
 	}
-	/**
-     * todo: get max rid by id
-     */
-    function getMaxRID()
-    {
-    	$this->db->select_max('rid');
-    	$this->db->from($this->table_name);
-    	$query = $this->db->get();
-    	$arr = $query->row_array();
-		return $arr['rid'];
-    }
-	/**
-     * todo: get item by rid
-     */
-    function getItemByRID($rid, $langCurrent, $langDefault = "")
-    {
-    	$query=$this->db->get_where($this->table_name,array("language" => $langCurrent, "rid" =>$rid));
-    	if($query->num_rows()>0){
-    		return $query->row_array();
-    	}
-    	elseif($langDefault!="") {
-    		$query=$this->db->get_where($this->table_name,array("language" => $langDefault, "rid" =>$rid));
-    		return $query->row_array();
-    	}
-    	else 	
-    		return NULL;
-    		
-    }
-    
+	
+
 }
+

@@ -1,4 +1,4 @@
-<h2>{$ROLE_INFO_TITLE}</h2>
+<h1>{$ROLE_INFO_TITLE}</h1>
      
          <div class="form">
          <form action="{$baseUrl}aclrole/save" method="post" class="niceform" enctype="multipart/form-data">

@@ -26,5 +26,10 @@ $lang['CATALOG'] = 'Catalog';
 $lang['PRODUCT_TITLE_PAGE'] = "Product";
 $lang['CONTACT_TEXT'] = 'Need to speak to someone?';
 $lang['CLICK_TO_FULL_IMAGE'] = 'Click image to zoom';
+$lang['PRICE'] = 'Price';
+$lang['CURRENCY'] = 'VND';
+$lang['Catalog'] = 'Catalog';
+$lang['PRODUCT CODE'] = "Code";
+
 
 ?>

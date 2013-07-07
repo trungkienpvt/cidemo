@@ -1,5 +1,5 @@
 <?php
-$lang['TITLE_PAGE'] = "Manage Category"; 
+$lang['INDEX_CATEGORY_PRODUCT_PAGE_TITLE'] = "Manage Category"; 
 $lang['CATEGORY_NAME'] = "Name";
 $lang['CATEGORY_PARENT'] = "Parent";
 $lang['CATEGORY_STATUS'] = "Status";
@@ -28,4 +28,6 @@ $lang['TRANSLATED_STATUS'] = "Translated";
 $lang['TRANSLATE_STATUS'] = "Translate";
 $lang['TRANSLATED_STATUS'] = "Translated";
 $lang['SAVE_DATA_SUCCESS'] = "Save data successfull";
+$lang['ORDERING'] = "Ordering";
+$lang['CAN NOT DELETE ROOT CATEGORY'] = "Can't delele root cateogory";
 ?>

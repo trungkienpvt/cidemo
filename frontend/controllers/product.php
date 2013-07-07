@@ -20,6 +20,7 @@ class Product extends Front_Controller {
 	public function index()
 	{
 		$this->load->library("StringUtility");
+		$this->load->library('my_utility');
 		$langCurrent = $this->session->userdata("language");
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
@@ -40,7 +41,6 @@ class Product extends Front_Controller {
 			$middle = $language_abbr . '/';
 		else
 			$middle = '';
-		
 		$wheres = array();
 		$wheres['products.language ='] = $langCurrent;	
 		$productList = $this->Model_Product->getList('products.*',$page,$limitPerPage,$wheres);
@@ -49,17 +49,13 @@ class Product extends Front_Controller {
 			$productList[$i]['createdate'] = date('d/m/Y',$productList[$i]['createdate']);
 			
 		}
-		
-		
-		
-		
 		$this->breadcrumb->append_crumb('Home', site_url('/') . $middle);
 		$breadCrumb = $this->breadcrumb->output();
 		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
-		$this->load->library('my_utility');
-		$view=$this->mtemplate->preView();
+		$preData = $this->mtemplate->getData();
 		$objString = new StringUtility();
 		$data = array();
+		$data['PREDATA'] = $preData;
 		$data['obj_string'] = $objString;
 		$data['imagePath'] = $this->config->item('themes_image');
 		$data['imageUpload'] = $this->config->item('image_upload_link');
@@ -74,36 +70,29 @@ class Product extends Front_Controller {
 		$config['total_rows'] = $this->Model_Product->getNumItem($wheresNum);
 //		$config['total_rows'] = 10;
 		$config['per_page'] = $limitPerPage;
-		
-		$view->assign('title_page',$this->lang->line('PRODUCT_LIST'),true);
-		$view->assign('layout_content','index_product.tpl',true);
-		$view->assign('PRODUCT_ITEM',$productData,true);
+		$data['title_page']=$this->lang->line('PRODUCT_LIST');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/index_product", 
+		array('PRODUCT_ITEM' =>$productData, 'PAGINATION_STRING'=>$this->pagination->create_links()), true);
 		//Load language key
-		$view->assign('PAGE_TITLE',$this->lang->line('PRODUCT_LIST'),true);
-		$view->assign('NAME_TITLE',$this->lang->line('NAME_TITLE'),true);
-		$view->assign('DESCRIPTION_TITLE',$this->lang->line('DESCRIPTION_TITLE'),true);
-		$view->assign('CONTENT_TITLE',$this->lang->line('CONTENT_TITLE'),true);
-		$view->assign('IMAGE_TITLE',$this->lang->line('IMAGE_TITLE'),true);
-		$view->assign('DATE_CREATE_TITLE',$this->lang->line('DATE_CREATE_TITLE'),true);
-		$view->assign('ORDERING_TITLE',$this->lang->line('ORDERING_TITLE'),true);
-		$view->assign('CATEGORY_TITLE',$this->lang->line('CATEGORY_TITLE'),true);
-		$view->assign('PRICE_TITLE',$this->lang->line('PRICE_TITLE'),true);
-		$view->assign('EDIT_TITLE',$this->lang->line('EDIT_TITLE'),true);
-		$view->assign('DELETE_TITLE',$this->lang->line('DELETE_TITLE'),true);
-		
-		$view->assign('STATUS_TITLE',$this->lang->line('STATUS_TITLE'),true);
-		//pagination
-//		$this->load->library('pagination');
-		$this->pagination->initialize($config);
-//		echo $this->pagination->create_links();exit;
-		$view->assign('PAGINATION_STRING',$this->pagination->create_links(),true);
-		$view->assign('URL_ADD_ITEM',site_url("product/add"),true);
-		$view->assign('NUM_ROW',count($productList),true);
-		$view->assign('START_LOOP',0,true);
-		$view->assign('PLEASE_SELECT',$this->lang->line('PLEASE_SELECT'),true);
-		$view->assign('BREAD_CRUMB',$breadCrumb,true);
-		$view->assign('BANNER_TOP',1,true);
-		$view->display('index.tpl');
+		$data['PAGE_TITLE'] = $this->lang->line('PRODUCT_LIST');
+		$data['NAME_TITLE'] = $this->lang->line('NAME_TITLE');
+		$data['DESCRIPTION_TITLE'] = $this->lang->line('DESCRIPTION_TITLE');
+		$data['CONTENT_TITLE'] = $this->lang->line('CONTENT_TITLE');
+		$data['IMAGE_TITLE'] = $this->lang->line('IMAGE_TITLE');
+		$data['DATE_CREATE_TITLE'] = $this->lang->line('IMAGE_TITLE');
+		$data['ORDERING_TITLE'] = $this->lang->line('ORDERING_TITLE');
+		$data['CATEGORY_TITLE'] = $this->lang->line('CATEGORY_TITLE');
+		$data['PRICE_TITLE'] = $this->lang->line('PRICE_TITLE');
+		$data['EDIT_TITLE'] = $this->lang->line('EDIT_TITLE');
+		$data['DELETE_TITLE'] = $this->lang->line('DELETE_TITLE');
+		$data['STATUS_TITLE'] = $this->lang->line('STATUS_TITLE');
+		$data['URL_ADD_ITEM'] = site_url("product/add");
+		$data['NUM_ROW'] = count($productList);
+		$data['START_LOOP'] = 0;
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$data['BREAD_CRUMB'] = $breadCrumb;
+		$data['BANNER_TOP'] = 1;
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
 	}	
 	
 	/**
@@ -112,11 +101,13 @@ class Product extends Front_Controller {
 	
 	public function lists()
 	{
+
 		$this->load->library("StringUtility");
 		$langCurrent = $this->session->userdata("language");
 		$langDefault = $this->config->item('language');
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
+		$this->load->library('pagination');
 		$limitPerPage=$this->config->item('limit_of_page');
 		$this->load->model('Model_Product');
 		$this->load->model('Model_Category_Product');
@@ -164,7 +155,7 @@ class Product extends Front_Controller {
 		//get category data by rid
 		$catData = $this->Model_Category_Product->getItemByRID($rid, $langCurrent, $langDefault);
 		if(!empty($catData))
-			$catID = $catData['idCategory'];
+			$catID = $catData['id'];
 		else 
 			$catID = 0;
 		$where = array();
@@ -187,47 +178,42 @@ class Product extends Front_Controller {
 		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
 		$this->load->library('my_utility');
 		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
+		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
+		$preData = $this->mtemplate->getData();
 		$objString = new StringUtility();
 		$data = array();
+		$data['BREAD_CRUMB'] = $breadCrumb;
+		$data['PREDATA'] = $preData;
 		$data['obj_string'] = $objString;
 		$data['imagePath'] = $this->config->item('themes_image');
 		$data['imageUpload'] = $this->config->item('image_upload_link');
-		$data['product_list'] = $productList;
 		$data['baseUrl'] = $this->mtemplate->baseUrl;
-		$productData = $this->load->view("templates/" . $this->mtemplate->_template . "/product-item", 
-		$data, true);
-		$view->assign('title_page',$catData['catName'],true);
-		$view->assign('layout_content','product-list.tpl',true);
-		$view->assign('PRODUCT_ITEM',$productData,true);
-		//Load language key
-		$view->assign('TITLE_TITLE',$this->lang->line('TITLE_TITLE'),true);
-		$view->assign('PAGE_TITLE',$catData['catName'],true);
-		$view->assign('NAME_TITLE',$this->lang->line('NAME_TITLE'),true);
-		$view->assign('DESCRIPTION_TITLE',$this->lang->line('DESCRIPTION_TITLE'),true);
-		$view->assign('CONTENT_TITLE',$this->lang->line('CONTENT_TITLE'),true);
-		$view->assign('IMAGE_TITLE',$this->lang->line('IMAGE_TITLE'),true);
-		$view->assign('DATE_CREATE_TITLE',$this->lang->line('DATE_CREATE_TITLE'),true);
-		$view->assign('ORDERING_TITLE',$this->lang->line('ORDERING_TITLE'),true);
-		$view->assign('CATEGORY_TITLE',$this->lang->line('CATEGORY_TITLE'),true);
-		$view->assign('CATEGORY_NAME',$catData['catName'],true);
-		$view->assign('PRICE_TITLE',$this->lang->line('PRICE_TITLE'),true);
-		$view->assign('EDIT_TITLE',$this->lang->line('EDIT_TITLE'),true);
-		$view->assign('DELETE_TITLE',$this->lang->line('DELETE_TITLE'),true);
-		$view->assign('STATUS_TITLE',$this->lang->line('STATUS_TITLE'),true);
+		$data['product_list'] = $productList;
+		$productData = $this->load->view("templates/" . $this->mtemplate->_template . "/product-item",$data, true);
 		//pagination
-		$this->load->library('pagination');
 		$this->pagination->initialize($config);
-//		echo $this->pagination->create_links();exit;
-		$view->assign('PAGINATION_STRING',$this->pagination->create_links(),true);
-		$view->assign('URL_ADD_ITEM',site_url("product/add"),true);
-		$view->assign('NUM_ROW',count($productList),true);
-		$view->assign('START_LOOP',0,true);
-		$view->assign('PLEASE_SELECT',$this->lang->line('PLEASE_SELECT'),true);
-		$view->assign('LANGUAGE_ABBR',$middle,true);
-		$view->assign('BREAD_CRUMB',$breadCrumb,true);
-		$view->assign('BANNER_TOP',1,true);
-		$view->display('index.tpl');
+		$data['title_page']=$this->lang->line('PRODUCT_LIST');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/product-list", 
+		array('PRODUCT_ITEM' =>$productData, 'PAGINATION_STRING'=>$this->pagination->create_links()), true);
+		$data['PAGE_TITLE'] = $this->lang->line('PRODUCT_LIST');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['NAME_TITLE'] = $this->lang->line('NAME_TITLE');
+		$data['DESCRIPTION_TITLE'] = $this->lang->line('DESCRIPTION_TITLE');
+		$data['CONTENT_TITLE'] = $this->lang->line('CONTENT_TITLE');
+		$data['IMAGE_TITLE'] = $this->lang->line('IMAGE_TITLE');
+		$data['DATE_CREATE_TITLE'] = $this->lang->line('IMAGE_TITLE');
+		$data['ORDERING_TITLE'] = $this->lang->line('ORDERING_TITLE');
+		$data['CATEGORY_TITLE'] = $this->lang->line('CATEGORY_TITLE');
+		$data['PRICE_TITLE'] = $this->lang->line('PRICE_TITLE');
+		$data['EDIT_TITLE'] = $this->lang->line('EDIT_TITLE');
+		$data['DELETE_TITLE'] = $this->lang->line('DELETE_TITLE');
+		$data['STATUS_TITLE'] = $this->lang->line('STATUS_TITLE');
+		$data['URL_ADD_ITEM'] = site_url("product/add");
+		$data['NUM_ROW'] = count($productList);
+		$data['START_LOOP'] = 0;
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
+	
 	}	
 	
 	public function detail()
@@ -262,28 +248,42 @@ class Product extends Front_Controller {
 				$middle = '';
 		
 		}
-		
-		
 		$productData = $this->Model_Product->getItemByRID($rid, $langCurrent, $langDefault);
+		$catID = $productData['category'];
+		$this->breadcrumb->append_crumb('Home', site_url('/') . $middle);
+		$this->breadcrumb->append_crumb('Catalog', site_url('/') . $middle . "product/catalog/");
+		$this->breadcrumb->append_crumb('Lists', site_url('/') . $middle . "category/$catID");
+		$this->breadcrumb->append_crumb($productData['name'],'/' );
+		$breadCrumb = $this->breadcrumb->output();
 		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
 		$this->load->library('my_utility');
 		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$view->assign('title_page',$this->lang->line('PRODUCT_TITLE_PAGE') . ' | ' . $productData['name'],true);
-		$view->assign('layout_content','product-detail.tpl',true);
-		$view->assign('PRODUCT_DATA', $productData, true);
-		//Load language key
-		$view->assign('TITLE_TITLE',$this->lang->line('TITLE_TITLE'),true);
-		$view->assign('PRODUCT_PAGE_TITLE',$this->lang->line('MANAGE_TITLE_PAGE'),true);
-		$view->assign('NAME_TITLE',$this->lang->line('NAME_TITLE'),true);
-		$view->assign('PAGE_TITLE',$this->lang->line('PRODUCT_DETAIL'),true);
-		$view->assign('START_LOOP',0,true);
-		$view->assign('PLEASE_SELECT',$this->lang->line('PLEASE_SELECT'),true);
-		$view->assign("CLICK_TO_FULL_IMAGE", $this->lang->line('CLICK_TO_FULL_IMAGE'));
-		$view->assign("CONTACT_TEXT", $this->lang->line("CONTACT_TEXT"));
-		$view->assign('MENU_LEFT',1,true);
-		$view->assign('LANGUAGE_ABBR',$middle,true);
-		$view->display('index.tpl');
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['imagePath'] = $this->config->item('themes_image');
+		$data['imageUpload'] = $this->config->item('image_upload_link');
+		$data['baseUrl'] = $this->mtemplate->baseUrl;
+		$data['BREAD_CRUMB'] = $breadCrumb;
+		$data['PREDATA'] = $preData;
+		$data['PRODUCT_DATA'] = $productData;
+		$data['PAGE_TITLE'] = $this->lang->line('PRODUCT_LIST');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['NAME_TITLE'] = $this->lang->line('NAME_TITLE');
+		$data['DESCRIPTION_TITLE'] = $this->lang->line('DESCRIPTION_TITLE');
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$data['PRODUCT_PRICE'] = $this->lang->line('CURRENCY');
+		$data['PRODUCT_CURRENCY'] = $this->lang->line('IMAGE_TITLE');
+		$data['CLICK_TO_FULL_IMAGE'] = $this->lang->line('CLICK_TO_FULL_IMAGE');
+		$data['CONTACT_TEXT'] = $this->lang->line('CONTACT_TEXT');
+		$data['EDIT_TITLE'] = $this->lang->line('EDIT_TITLE');
+		$data['DELETE_TITLE'] = $this->lang->line('DELETE_TITLE');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('$middle');
+		$data['URL_ADD_ITEM'] = site_url("product/add");
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/product-detail", 
+		$data, true);
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
+		
 	
 	}
 	
@@ -295,6 +295,7 @@ class Product extends Front_Controller {
 		$langCurrent = $this->session->userdata("language");
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
+		$this->load->library('pagination');
 		$limitPerPage=$this->config->item('limit_of_page');
 		$lang = $this->uri->segment(1);	
 		if(isset($lang) && strlen($lang) == 2)
@@ -317,41 +318,39 @@ class Product extends Front_Controller {
 		else
 			$middle = '';
 		$where = array();
-		$where['language ='] = $langCurrent;		
+		$where['language ='] = $langCurrent;	
+		$where['level <>'] = 0;	
 		$config['base_url'] = site_url('/') . $middle . "product/catalog" . "/page";
-		$config['total_rows'] = $this->Model_Category_Product->getNumItem($where);
+		$config['total_rows'] = $this->Model_Category_Product->_getNumItem($where);
 //		$config['total_rows'] = 10;
 		$config['per_page'] = $limitPerPage;
+		$this->pagination->initialize($config);
 	 	$this->breadcrumb->append_crumb('Home', site_url('/') . $middle);
 		$this->breadcrumb->append_crumb('Catalog', site_url('/') . $middle . "product/catalog/");
 		$breadCrumb = $this->breadcrumb->output();
-		$categoryList = $this->Model_Category_Product->getList('*',$page,$limitPerPage, $where);
+		$categoryList = $this->Model_Category_Product->_getList('*',$page,$limitPerPage, $where);
 		$this->load->library('mtemplate',array('language' =>$language_abbr, "lang" =>$langCurrent));
 		$this->load->library('my_utility');
-		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$view->assign('title_page',$this->lang->line('CATALOG'),true);
-		$view->assign('layout_content','category-list.tpl',true);
-		$view->assign('CATEGORY_LIST',$categoryList,true);
-		//Load language key
-		$view->assign('TITLE_TITLE',$this->lang->line('TITLE_TITLE'),true);
-		$view->assign('PAGE_TITLE',$this->lang->line('CATEGORY_LIST'),true);
-		$view->assign('NAME_TITLE',$this->lang->line('NAME_TITLE'),true);
-		$view->assign('IMAGE_TITLE',$this->lang->line('IMAGE_TITLE'),true);
-		//pagination
-		$this->load->library('pagination');
-		$this->pagination->initialize($config);
-//		echo $this->pagination->create_links();exit;
-		$view->assign('PAGINATION_STRING',$this->pagination->create_links(),true);
-		$view->assign('NUM_ROW',count($categoryList),true);
-		$view->assign('START_LOOP',0,true);
-		$view->assign('LANGUAGE_ABBR',$middle,true);
-		$view->assign('BREAD_CRUMB',$breadCrumb,true);
-		$view->assign('BANNER_TOP', 1, true);
-		$view->display('index.tpl');
-		
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['BREAD_CRUMB'] = $breadCrumb;
+		$data['PAGINATION_STRING'] = $this->pagination->create_links();
+		$data['PREDATA'] = $preData;
+		$data['CATEGORY_LIST'] = $categoryList;
+		$data['PAGE_TITLE'] = $this->lang->line('PRODUCT_LIST');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['NAME_TITLE'] = $this->lang->line('NAME_TITLE');
+		$data['DESCRIPTION_TITLE'] = $this->lang->line('DESCRIPTION_TITLE');
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$data['PRODUCT_PRICE'] = $this->lang->line('CURRENCY');
+		$data['PRODUCT_CURRENCY'] = $this->lang->line('IMAGE_TITLE');
+		$data['CLICK_TO_FULL_IMAGE'] = $this->lang->line('CLICK_TO_FULL_IMAGE');
+		$data['CONTACT_TEXT'] = $this->lang->line('CONTACT_TEXT');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('middle');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/category-list", 
+		$data, true);
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
 	}
-	
 	public function previewphoto()
 	{
 		//update path tmp
@@ -362,7 +361,6 @@ class Product extends Front_Controller {
 		{
 			$json['status'] = 0;
 			$json['issue'] = $this->upload->display_errors('','');
-			
 		}
 		else
 		{
@@ -371,7 +369,6 @@ class Product extends Front_Controller {
 			{
 				$json[$k] = $v;
 			}
-			
 		}
 		echo json_encode($json);
 	}

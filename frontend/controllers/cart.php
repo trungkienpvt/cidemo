@@ -23,6 +23,7 @@ class Cart extends Front_Controller {
 		$langCurrent = $this->session->userdata("language");
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
+		$this->lang->load('cart', $langCurrent);
 		$this->load->model('Model_Product');
 		$this->load->library("NL_Checkout");
 		//get product data from session
@@ -31,37 +32,46 @@ class Cart extends Front_Controller {
 			$middle = $language_abbr . '/';
 		else
 			$middle = '';
-		
-		$data = array();
-		$data['cart'] = new CI_Cart();
-		$data['model_product'] = new Model_Product();
-//		$data['cart']->destroy();
 		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
 		$this->breadcrumb->append_crumb('Home', $this->mtemplate->baseUrl);
 		$this->breadcrumb->append_crumb('Catalog', $this->mtemplate->baseUrl . "product/catalog/");
 		$this->breadcrumb->append_crumb('Cart', $this->mtemplate->baseUrl . 'cart');
 		$breadCrumb = $this->breadcrumb->output();
-		$data['imageUpload'] = $this->mtemplate->imageUpload;
-		$data['basePath'] = $this->mtemplate->basePath;
+		$data = array();
+		$data['cart'] = $this->cart;
+		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
+		$preData = $this->mtemplate->getData();
+		$data['model_product'] = new Model_Product();
+		$data['imagePath'] = $this->config->item('themes_image');
+		$data['imageUpload'] = $this->config->item('image_upload_link');
 		$data['baseUrl'] = $this->mtemplate->baseUrl;
-		$data['imagePath'] = $this->mtemplate->imagePath;
 		$data['middle_lang'] = $middle;
 		$objString = new StringUtility();
 		$data['obj_string'] = $objString;
 		$formCart = $this->load->view("templates/" . $this->mtemplate->_template ."/cart",$data, true);
 		$this->load->library('my_utility');
-		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$view->assign('title_page',$this->lang->line('CART_LIST'),true);
-		$view->assign('layout_content','carts.tpl',true);
-		//Load language key
-		$view->assign('TITLE_TITLE',$this->lang->line('TITLE_TITLE'),true);
-		$view->assign('PAGE_TITLE',$this->lang->line('CART_LIST'),true);
-		$view->assign('NAME_TITLE',$this->lang->line('NAME_TITLE'),true);
-		$view->assign('IMAGE_TITLE',$this->lang->line('IMAGE_TITLE'),true);
-		$view->assign('form_cart',$formCart,true);
-		$view->assign('BREAD_CRUMB',$breadCrumb,true);
-		$view->display('index.tpl');
+		$data['BREAD_CRUMB'] = $breadCrumb;
+		$data['PREDATA'] = $preData;
+		$data['PAGE_TITLE'] = $this->lang->line('CART_LIST');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['NAME_TITLE'] = $this->lang->line('NAME_TITLE');
+		$data['IMAGE_TITLE'] = $this->lang->line('IMAGE_TITLE');
+		$data['DESCRIPTION_TITLE'] = $this->lang->line('DESCRIPTION_TITLE');
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$data['PRODUCT_PRICE'] = $this->lang->line('CURRENCY');
+		$data['CONTACT_TEXT'] = $this->lang->line('CONTACT_TEXT');
+		$data['EDIT_TITLE'] = $this->lang->line('EDIT_TITLE');
+		$data['DELETE_TITLE'] = $this->lang->line('DELETE_TITLE');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('middle');
+		$data['URL_ADD_ITEM'] = site_url("product/add");
+		$data['PLEASE_SELECT'] = $this->lang->line('PLEASE_SELECT');
+		$data['form_cart'] = $formCart;
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/carts", 
+		$data, true);
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
+		
+		
+		
 	}	
 	
 	
@@ -154,9 +164,11 @@ class Cart extends Front_Controller {
 		$this->breadcrumb->append_crumb('Cart', site_url('/') . $middle . 'cart');
 		$breadCrumb = $this->breadcrumb->output();
 		$data = array();
-		$objCart = new CI_Cart();
+		$objCart = $this->cart;
 		$cartContent = $objCart->contents();
 		if(count($cartContent)>0){
+					
+			
 			// Create new PHPExcel object
 			$objPHPExcel = new PHPExcel();
 			// Set properties
@@ -190,6 +202,7 @@ class Cart extends Front_Controller {
 			    $objDrawing = new PHPExcel_Worksheet_Drawing();
 				$objDrawing->setName('Paid');
 				$objDrawing->setDescription('Paid');
+				if(file_exists(PATH_ROOT .'/data/images//thumb/' . $item['images']))
 				$objDrawing->setPath(PATH_ROOT .'/data/images//thumb/' . $item['images']);
 				$objDrawing->setCoordinates('D' . $i);
 	//			$objDrawing->setOffsetX(110);
@@ -197,6 +210,7 @@ class Cart extends Front_Controller {
 				$objDrawing->getShadow()->setVisible(true);
 				$objDrawing->getShadow()->setDirection(45);
 				$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+
 				$i += 6;
 			}		
 			// Redirect output to a client’s web browser (Excel5)
@@ -217,7 +231,6 @@ class Cart extends Front_Controller {
 			echo"empty data";
 			exit;
 		}
-		
 	}
 	/*
 	 * todo: export data to pdf
@@ -270,7 +283,6 @@ class Cart extends Front_Controller {
 			        <td>'.'images'.'</td>
 			        <td>'.'subtotal'.'</td>
 			    	</tr>';
-			
 			foreach($cartContent as $item){
 				$tbl .= '<tr>
 		        		<td >'. $item['name'] .'</td>

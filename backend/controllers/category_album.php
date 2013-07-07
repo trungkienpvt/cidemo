@@ -1,322 +1,385 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once(APPPATH.'libraries/base_controller.php');
-class Category_Album extends Base_Controller {
-	public function form_validates()	
-	{
-		$config = array(
-               array(
-                     'field'   => 'name',
-                     'label'   => 'Name',
-                     'rules'   => 'required'
-                  ),
-               array(
-                     'field'   => 'status',
-                     'label'   => 'Status',
-                     'rules'   => 'required'
-                  )
-              
-            );
-		$this->form_validation->set_rules($config); 
-		if ($this->form_validation->run() == FALSE)
-			return false;
-		else
-			return true;
-		
-	}
-
-	function index()
-	{
-		
-		$langCurrent = $this->session->userdata("language");
-		$language_abbr = $this->session->userdata("language_abbr");
-		$this->lang->load('category', $langCurrent);
-		$limitPerPage=$this->config->item('limit_of_page');
-		$this->load->model('Model_Category_Album');
-		$lang = $this->uri->segment(1);
-		if(isset($lang) && strlen($lang) == 2)
-			$page=$this->uri->segment(5);
-		else 
-			$page=$this->uri->segment(4);
-		if(empty($page)) 
-		{
-			$page = 0;
-		}
-		$config['cur_page'] = $page;
-		if($language_abbr != $this->config->item('language_abbr'))
-			$middle = 'backend/' . $language_abbr . '/';
-		else
-			$middle = 'backend/';
-		$config['base_url'] = $this->url("category_album/index" . "/page");
-		$config['total_rows'] = $this->Model_Category_Album->getNumItem(array());
-//		$config['total_rows'] = 10;
-		$config['per_page'] = $limitPerPage;
-		$categoryList=$this->Model_Category_Album->getList('*',$page,$limitPerPage);
-		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
-		$title_page=$this->lang->line('TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$view->assign('title_page',$this->lang->line('TITLE_PAGE'),true);
-		$view->assign('layout_content','index_category_album.tpl',true);
-		$view->assign('ALBUM_LIST',$categoryList,true);
-		//Load language key
-		$view->assign('CATEGORY_PAGE_TITLE',$this->lang->line('TITLE_PAGE'),true);
-		$view->assign('CATEGORY_NAME',$this->lang->line('CATEGORY_NAME'),true);
-		$view->assign('CATEGORY_PARENT',$this->lang->line('CATEGORY_PARENT'),true);
-		$view->assign('CATEGORY_LANGUAGE',$this->lang->line('CATEGORY_LANGUAGE'),true);
-		$view->assign('CATEGORY_STATUS',$this->lang->line('CATEGORY_STATUS'),true);
-		$view->assign('EDIT_TITLE',$this->lang->line('EDIT_TITLE'),true);
-		$view->assign('DELETE_TITLE',$this->lang->line('DELETE_TITLE'),true);
-		$view->assign('PAGE_TITLE',$this->lang->line('ALBUM_TITLE_PAGE'),true);
-		$view->assign('STATUS_TITLE',$this->lang->line('STATUS_TITLE'),true);
-		$view->assign('PLEASE_SELECT',$this->lang->line('PLEASE_SELECT'),true);
-		
-		//pagination
-		$this->load->library('pagination');
-		$this->pagination->initialize($config);
-		$view->assign('PAGINATION_STRING',$this->pagination->create_links($middle),true);
-		//generate list category
-		$numCategory = $this->Model_Category_Album->getNumItem(array());
-		if($numCategory)
-		{
-			$number_row = $numCategory;
-			$k=1;
-			$str="<span class='gi'>|&mdash;</span>";
-			$strRow="";
-			$arr_lang=array('english','vietnamese');
-			foreach($arr_lang as $r){
-				$this->Model_Category_Album->showCategoryItem(0,$r,$strRow,$k,$str, 
-				array('baseurl' =>$this->mtemplate->basePath, 'imagepath' =>$this->mtemplate->imagePath), $this->mtemplate->baseUrl);	
-			}
-			$strRow = array_slice($strRow,$page,$limitPerPage);
-			$strRow=implode('',$strRow);
-		}
-		$view->assign('NUM_ROW',$numCategory,true);
-		$view->assign('STR_ROW',$strRow,true);
-		$view->display('index.tpl');
-
-	}
-	
-	public function add() 
-	{
-		//TRUY VAN DE LAY CAC CATEGORY
-		$lang = $this->session->userdata("language");
-		$language_abbr = $this->session->userdata("language_abbr");
-		$this->lang->load('category', $lang);
-		$base_url=$this->config->item('base_url');
-		$this->load->model('Model_Category_Album');
-		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$lang));
-		$view=$this->mtemplate->preView();
-		//check edit or add action
-		$lang = $this->uri->segment(1);
-		if(isset($lang) && strlen($lang) == 2)
-			$id=$this->uri->segment(5);
-		else 
-			$id=$this->uri->segment(4);
-		$where = array();
-		$categoryInfo = array();
-		if(!empty($id))
-		{
-			$categoryInfo=$this->Model_Category_Album->getItemById($id);
-			$view->assign('MY_SELECT',$categoryInfo['idCategory'],true);
-			$view->assign('CATEGORY_DATA',$categoryInfo,true);
-			$where = array('idCategory <>' => $id);
-		}
-		else
-		{
-			$view->assign('MY_SELECT',0,true);
-			$view->assign('CATEGORY_DATA',0,true);
-			$view->assign('EDIT_FLAG',0,true);
-		}
-		
-		if($categoryInfo)
-		//get category list
-		if($id!=0)
-		{
-			$where['lever <='] = $categoryInfo['lever'];
-			
-		}
-		$listCategory = $this->Model_Category_Album->getList('idCategory,catName',0,0,$where);
-		$listCategoryValue = array();
-		$listCategoryText = array();
-		//initial category option
-		$listCategoryText[] = "--Choise--";
-		$listCategoryValue[] = 0;
-		foreach($listCategory as $row)
-		{
-			$listCategoryText[] = $row['catName'];
-			$listCategoryValue[] = $row['idCategory'];	
-			
-		}
-		$view->assign('LIST_CATGORY_TEXT', $listCategoryText);
-		$view->assign('LIST_CATGORY_VALUE', $listCategoryValue);
-		if($language_abbr != $this->config->item('language_abbr'))
-			$middle = 'backend/' . $language_abbr . '/';
-		else
-			$middle = 'backend/';
-		$urlPost = $this->url("category_album/getcategorylist");
-		$view->assign('title_page',$this->lang->line('TITLE_PAGE'),true);
-		$view->assign('layout_content','add_category_album.tpl',true);
-		//Load language key
-		$view->assign('TITLE_PAGE',$this->lang->line('TITLE_PAGE'),true);
-		$view->assign('CATEGORY_NAME',$this->lang->line('CATEGORY_NAME'),true);
-		$view->assign('CATEGORY_STATUS',$this->lang->line('CATEGORY_STATUS'),true);
-		$view->assign('CATEGORY_TYPE',$this->lang->line('CATEGORY_TYPE'),true);
-		$view->assign('CATEGORY_TAB',$this->lang->line('CATEGORY_TAB'),true);
-		$view->assign('SELECT_STATUS_TITLE',$this->lang->line('SELECT_STATUS_TITLE'),true);
-		$view->assign('ACTIVE_TITLE',$this->lang->line('ACTIVE_TITLE'),true);
-		$view->assign('UNACTIVE_TITLE',$this->lang->line('UNACTIVE_TITLE'),true);
-		$view->assign('CATEGORY_PARENT',$this->lang->line('CATEGORY_PARENT'),true);
-		$view->assign('SUBMIT_TITLE',$this->lang->line('SUBMIT_TITLE'),true);
-		$view->assign('CATEGORY_INFO_TITLE',$this->lang->line('CATEGORY_INFO_TITLE'),true);
-		$view->display('index.tpl');
-	}
-	
-	public function save()
-	{
-		$lang = $this->session->userdata("language");
-		$language_abbr = $this->session->userdata("language_abbr");
-		$this->lang->load('category', $lang);
-		//validate form
-		$this->load->helper(array('form', 'url'));
-		$id = $this->input->post('id');
-		$lever = $this->input->post('lever');
-		if(is_array($id))
-			$id=$id[0];
-		$idString = "";
-		if($id!=0)
-			$idString = "id/$id";
-		if ($this->form_validates() == FALSE)
-		{
-			$message=validation_errors();
-			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
-			redirect( $this->url('category_album/add/'.$idString));
-		}
-		$name = $this->input->post('name');
-		$parentId = $this->input->post('parent');
-		$status = $this->input->post('status');
-		if($id==0)
-		{
-			$this->db->set('catName', $name);
-			$this->db->set('idParent', $parentId);
-			$this->db->set('status', $status);
-			$this->db->set('language', $lang);
-			if($parentId!=0)
-				$this->db->set('lever', $lever + 1);
-			$dbRet = $this->db->insert('category_album'); 
-		}
-		else
-		{
-			$this->db->set('catName', $name);
-			$this->db->set('idParent', $parentId);
-			$this->db->set('status', $status);
-			$this->db->set('language', $lang);
-			$this->db->where('idCategory', $id);
-			if($parentId!=0)
-				$this->db->set('lever', $lever + 1);
-			$dbRet = $this->db->update('category_album');  
-			
-		}
-		if(!$dbRet)
-		{
-			$message = $this->db->_error_message();
-			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
-		}
-		else 
-		{
-			$message = $this->lang->line('SAVE_DATA_SUCCESS');
-			$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"warning"));	
-		}	
-		redirect($this->url('category_album/'));
-	}
-	function delete()
-	{
-		$lang = $this->session->userdata("language");
-		$language_abbr = $this->session->userdata("language_abbr");
-		$this->lang->load('category', $lang);
-		$id=$this->input->post('id');
-		if(empty($id))
-		{
-			$lang = $this->uri->segment(1);	
-			if(isset($lang) && strlen($lang) == 2)
-				$id=$this->uri->segment(5);
-			else 
-				$id=$this->uri->segment(4);
-			$this->db->where('idCategory', $id);
-		}else
-		{
-			$this->db->where_in('idCategory', $id);
-		}
-		//check category exist category child or no
-		$this->load->model('Model_Category_Album');
-		if(is_array($id)) {
-			foreach($id as $item) {
-				if($this->Model_Category_Album->isExistCategoryChild($item))
-				{
-					$message = $this->lang->line('EXIST_CATEGORY_CHILD');
-					$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
-					redirect($this->url('category_album/'));
-					
-					
-				}
-				else 
-				{
-					$this->db->delete('category_album');
-					$message = $this->lang->line('SAVE_DATA_SUCCESS');
-					$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"warning"));
-					redirect($this->url('category_album/'));
-				}		
-			}
-				
-		}else {
-				if($this->Model_Category_Abum->isExistCategoryChild($item))
-				{
-					$message = $this->lang->line('EXIST_CATEGORY_CHILD');
-					$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"error"));
-					redirect($this->url('category_album/'));
-					
-					
-				}
-				else 
-				{
-					$this->db->delete('category_album');
-					$message = $this->lang->line('SAVE_DATA_SUCCESS');
-					$this->session->set_flashdata(array('message_content' =>$message,'message_type' =>"warning"));
-					redirect($this->url('category_album/'));
-				}		
-		}
-		
-		
-	}
-	
-	/**
-	 * get category list by category_type
-	 */
-	public function getcategorylist()
-	{
-		$lang = $this->session->userdata("language");
-		$language_abbr = $this->session->userdata("language_abbr");
-		$this->load->model('Model_Category');
-		$type = $this->input->post('type');
-		$where = array();
-		$where['category.language = '] = $this->session->userdata("language");
-		$where['category_type = '] = $type;
-		$list = $this->Model_Category->getList('idCategory,catName',0,0,$where);
-		$listCategoryValue = array();
-		$listCategoryText = array();
-		//initial category option
-		$listCategoryText[] = "--Choise--";
-		$listCategoryValue[] = 0;
-		foreach($list as $row)
-		{
-			$listCategoryText[] = $row['catName'];
-			$listCategoryValue[] = $row['idCategory'];	
-			
-		}
-		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$lang));
-		$view = $this->mtemplate->loadAjax();
-		$view->assign('LIST_CATEGORY_TEXT', $listCategoryText);
-		$view->assign('LIST_CATEGORY_VALUE', $listCategoryValue);
-		$view->display("list_category_type.tpl");
-	}
+<?php
+if (! defined('BASEPATH'))
+    exit('No direct script access allowed');
+require_once (APPPATH . 'libraries/base_controller.php');
+class Category_Album extends Base_Controller
+{
+    public function form_validates ()
+    {
+        $config = array(
+        array('field' => 'name', 'label' => 'Name', 
+        'rules' => 'required|is_unique[category_album.name]'), 
+        array('field' => 'status', 'label' => 'Status', 'rules' => 'required'),
+        array('field' => 'parents', 'label' => 'Parents', 'rules' => 'required')
+        );
+        $this->form_validation->set_rules($config);
+        if ($this->form_validation->run() == FALSE)
+            return false;
+        else
+            return true;
+    }
+    function index ()
+    {
+        $defaultLang = $this->config->item("language");
+        $arrLang = $this->config->item('lang_uri_abbr');
+        $langCurrent = $this->session->userdata("language");
+        $langDefault = $this->config->item('language');
+        $language_abbr = $this->session->userdata("language_abbr");
+        $this->lang->load('category', $langCurrent);
+        $limitPerPage = $this->config->item('limit_of_page');
+        $this->load->model('Model_Category_Album');
+        $this->load->library('cpagination');
+        $orderName = '';
+        $orderValue = '';
+        if (isset($_REQUEST['order_name'])) {
+            $orderName = $_REQUEST['order_name'];
+        }
+        if (isset($_REQUEST['order_value'])) {
+            $orderValue = $_REQUEST['order_value'];
+        }
+        $lang = $this->uri->segment(1);
+        if (isset($lang) && strlen($lang) == 2) {
+            $page = $this->uri->segment(5);
+        } else {
+            $page = $this->uri->segment(4);
+        }
+        if (empty($page)) {
+            $page = 0;
+        }
+        $config['cur_page'] = $page;
+        if ($language_abbr != $this->config->item('language_abbr'))
+            $middle = 'backend/' . $language_abbr . '/';
+        else
+            $middle = 'backend/';
+        $config['base_url'] = $this->url("category_album/index" . "/page");
+        $wheres = array();
+        $wheresLike = array();
+        $searchKey = $this->input->post("keysearch");
+        $searchLang = $this->input->post("languagesearch");
+        if (! empty($searchLang) && $searchLang != $defaultLang) {
+            $wheres['language'] = $searchLang;
+        }
+        if (! empty($searchKey) && $searchKey != "")
+            $wheresLike['name'] = $searchKey;
+            //add field to order
+        $arrOrder = array(
+        'ordering' => 'asc');
+        $order = array();
+        if ($orderName != '' && $orderValue != '') {
+            $arrOrder[$orderName] = $orderValue;
+            $order[$orderName] = $orderValue;
+        }
+        $categoryList = $this->Model_Category_Album->_getList('*', $page, $limitPerPage, 
+        $wheres, $wheresLike, $order);
+        //		print_r($categoryList);exit;
+        $countCategory = $this->Model_Category_Album->_getNumItem(
+        $wheres, $wheresLike);
+        $this->load->library('mtemplate', 
+        array('language' => $language_abbr, "lang" => $langCurrent));
+        $title_page = $this->lang->line('TITLE_PAGE');
+        $this->load->library('mtemplate', 
+        array('language' => $language_abbr, "lang" => $langCurrent));
+        $preData = $this->mtemplate->getData();
+        $data = array();
+        $data['PREDATA'] = $preData;
+        $data['NUM_ROW'] = $countCategory;
+        $data['CATEGORY_LIST'] = $categoryList;
+        $data['array_lang'] = $arrLang;
+        $number_row = $countCategory;
+        $strRow = array();
+        $list = $this->Model_Category_Album->_getList("*", $page, $limitPerPage, $wheres, 
+        $wheresLike, $order);
+        for ($i = 0; $i < count($list); $i ++) {
+            if ($this->Model_Category_Album->_checkAllTranslate(
+            $list[$i]['id']))
+                $list[$i]['translated'] = false;
+            else
+                $list[$i]['translated'] = true;
+        }
+        $totalItem = $this->Model_Category_Album->_getNumItem($wheres, $wheresLike);
+        $config['total_rows'] = $totalItem;
+        $config['per_page'] = $limitPerPage;
+        $this->cpagination->initialize($config);
+        $data['pagination_string'] = $this->cpagination->create_links();
+        $data['list'] = $list;
+        $data['NUM_ROW'] = $totalItem;
+        $data['default_language'] = $defaultLang;
+        $data['arrOrder'] = $arrOrder;
+        $data['layout_content'] = $this->load->view(
+        "templates/" . $this->mtemplate->_template . "/index_category_album", $data, 
+        true);
+        $this->load->view(
+        "templates/" . $this->mtemplate->_template . "/index", $data);
+    }
+    public function add ()
+    {
+        //TRUY VAN DE LAY CAC CATEGORY
+        $langCurrent = $this->session->userdata(
+        "language");
+        $language_abbr = $this->session->userdata("language_abbr");
+        $this->lang->load('category', $langCurrent);
+        $arrLang = $this->config->item('lang_uri_abbr');
+        $base_url = $this->config->item('base_url');
+        $this->load->model('Model_Category_Album');
+        $this->load->library('mtemplate', 
+        array('language' => $language_abbr, "lang" => $langCurrent));
+        $preData = $this->mtemplate->getData();
+        $data = array();
+        $data['PREDATA'] = $preData;
+        $data['array_lang'] = $arrLang;
+        //check edit or add action
+        $lang = $this->uri->segment(1);
+        if (isset($lang) && strlen($lang) == 2) {
+            $id = $this->uri->segment(5);
+            $translateStatus = $this->uri->segment(8);
+        } else {
+            $id = $this->uri->segment(4);
+            $translateStatus = $this->uri->segment(6);
+        }
+        $wheres = array();
+        $categoryInfo = array();
+        if (! empty($id)) {
+            $categoryInfo = $this->Model_Category_Album->_getItemById(
+            $id);
+            $data['category_data'] = $categoryInfo;
+            //						print_r($categoryInfo);exit; 
+            $wheres['id <>'] = $id;
+            $wheres['language <>'] = $categoryInfo['language'];
+        } else {
+            $data['category_data'] = null;
+        }
+        $listCategory = $this->Model_Category_Album->_getList('*', 0, 0, $wheres);
+        if (empty($listCategory))
+            $listCategory = $this->Model_Category_Album->_getList('*', 0, 
+            0);
+        if (isset($id) && $id != 0) {
+            //get list language to translate
+            $data['arr_lang'] = array();
+            foreach ($arrLang as $key => $value) {
+                if (! $this->Model_Category_Album->_checkTranslate(
+                $id, $value)) {
+                    $data['arr_lang'][] = $value;
+                }
+            }
+        }
+        $data['category_list'] = $listCategory;
+        $data['TRANSLATE_STATUS'] = $translateStatus;
+        $data['layout_content'] = $this->load->view(
+        "templates/" . $this->mtemplate->_template . "/add_category_album", $data, true);
+        $this->load->view(
+        "templates/" . $this->mtemplate->_template . "/index", $data);
+    }
+    public function save ()
+    {
+        $defaultLang = $this->config->item("language");
+        $langCurrent = $this->session->userdata("language");
+        $language_abbr = $this->session->userdata("language_abbr");
+        $this->lang->load('category', $langCurrent);
+        $this->load->model("Model_Category_Album");
+        //validate form
+        $this->load->helper(array('form', 'url'));
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+        $parentId = $this->input->post('parents');
+        $status = $this->input->post('status');
+        $fileName = $this->input->post('previewphoto');
+        $imageLink = $this->input->post('image_link');
+        $translateStatus = $this->input->post('translate');
+        $langTranslate = $this->input->post('language');
+        $orderParent = $this->input->post("orderParent");
+        //		print_r($this->input->post());exit;
+        if (is_array($id))
+            $id = $id[0];
+        $idString = "";
+        if ($id != 0)
+            $idString = "id/$id";
+            //check case to edit item
+        if ($id != 0 && $translateStatus != 1) {
+            $config = array(
+            array('field' => 'name', 'label' => 'Name', 
+            'rules' => 'required|edit_unique[category_album.name.' . $id .
+             ']'), 
+            array('field' => 'status', 'label' => 'Status', 
+            'rules' => 'required'));
+            $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == FALSE) {
+                $message = validation_errors();
+                $message = str_replace("<p>", "", 
+                $message);
+                $message = str_replace("/p", "br/", 
+                $message);
+                $this->session->set_flashdata(
+                array('message_content' => $message, 
+                'message_type' => "error"));
+                redirect(
+                $this->url(
+                'category_album/add/' . $idString));
+            }
+        } else {
+            if ($this->form_validates() == FALSE) {
+                $message = validation_errors();
+                $message = str_replace("<p>", "", 
+                $message);
+                $message = str_replace("/p", "br/", 
+                $message);
+                $this->session->set_flashdata(
+                array('message_content' => $message, 
+                'message_type' => "error"));
+                redirect(
+                $this->url(
+                'category_album/add/' . $idString));
+            }
+        }
+        $image = "";
+        //		die("$langTranslate" . "status" . $translateStatus);
+        $data = array();
+        if ($fileName != "") {
+            //load config image
+            $imageThumbWidth = $this->config->item(
+            'product_thumb_width');
+            $imageThumbHeight = $this->config->item(
+            'product_thumb_height');
+            $imageThumbWidthX = $this->config->item(
+            'product_thumb_widthx');
+            $imageThumbHeightX = $this->config->item(
+            'product_thumb_heightx');
+            $this->load->library('upload', $this->imageConfig);
+            if (! ($image = $this->upload->saveImage($imageThumbWidth, 
+            $imageThumbHeight, $imageThumbWidthX, $imageThumbHeightX, 
+            $fileName))) {
+                $message = $this->lang->line(
+                'ERROR_MESSAGE_UPLOAD');
+                $this->session->set_flashdata(
+                array('message_content' => $message, 
+                'message_type' => "error"));
+                redirect(
+                $this->url('category_album/add'));
+            } else {
+                $data['images'] = $image;
+            }
+        }
+        if ($id == 0) {
+            $data['name'] = $name;
+            $data['parents'] = $parentId;
+            $data['status'] = $status;
+            $data['language'] = $langCurrent;
+            $dbRet = $this->Model_Category_Album->_save($data);
+        } elseif ($translateStatus == 1) {
+            $data['name'] = $name;
+            $data['status'] = $status;
+            $data['rid'] = $id;
+            $data['parents'] = $parentId;
+            if ($image == '' && $imageLink != '')
+                $data['images'] = $imageLink;
+            $data['language'] = $langTranslate;
+            $dbRet = $this->Model_Category_Album->_save($data, 0, $id);
+        } else {
+            $data['name'] = $name;
+            $data['parents'] = $parentId;
+            $data['status'] = $status;
+            $dbRet = $this->Model_Category_Album->_save($data, $id);
+        }
+        if (! $dbRet) {
+            $message = $this->db->_error_message();
+            $this->session->set_flashdata(
+            array('message_content' => $message, 
+            'message_type' => "error"));
+        } else {
+            $message = $this->lang->line('SAVE_DATA_SUCCESS');
+            $this->session->set_flashdata(
+            array('message_content' => $message, 
+            'message_type' => "warning"));
+        }
+        redirect($this->url('category_album/'));
+    }
+    function delete ()
+    {
+        $lang = $this->session->userdata("language");
+        $language_abbr = $this->session->userdata("language_abbr");
+        $this->lang->load('category', $lang);
+        $this->load->model("Model_Category_Album");
+        $id = $this->input->post('id');
+        if (empty($id)) {
+            $lang = $this->uri->segment(1);
+            if (isset($lang) && strlen($lang) == 2) {
+                $id = $this->uri->segment(5);
+                $langItem = $this->uri->segment(7);
+            } else {
+                $id = $this->uri->segment(4);
+                $langItem = $this->uri->segment(6);
+            }
+            //check node root or no
+            $nodeData = $this->Model_Category_Album->getNodeInfo(
+            $id);
+            if ($nodeData['parents'] == 0) {
+                $message = $this->lang->line(
+                'CAN NOT DELETE ROOT CATEGORY');
+                $this->session->set_flashdata(
+                array('message_content' => $message, 
+                'message_type' => "warning"));
+                redirect(
+                $this->url('category_album/'));
+            }
+            $result = $this->Model_Category_Album->getChildCategory($id);
+            if (! empty($result)) {
+                $this->Model_Category_Album->removeNode(
+                $id, 'node');
+            } else {
+                $this->Model_Category_Album->removeNode(
+                $id, 'branch');
+            }
+        } elseif (is_array($id)) {
+            foreach ($id as $item) {
+                $result = $this->Model_Category_Album->getChildCategory(
+                $item);
+                if (! empty($result)) {
+                    $this->Model_Category_Album->removeNode(
+                    $item, 'node');
+                } else {
+                    $this->Model_Category_Album->removeNode(
+                    $item, 'branch');
+                }
+            }
+        } else {
+            $result = $this->Model_Category_Album->getChildCategory(
+            $item);
+            if (! empty($result)) {
+                $this->Model_Category_Album->removeNode(
+                $id, 'node');
+            } else {
+                $this->Model_Category_Album->removeNode(
+                $id, 'branch');
+            }
+        }
+        $message = $this->lang->line('REMOVE CATEGORY SUCCESSFUL');
+        $this->session->set_flashdata(
+        array('message_content' => $message, 'message_type' => "warning"));
+        redirect($this->url('category_album/'));
+    }
+    /**
+     * todo: update order
+     */
+    function updateorder ()
+    {
+        $lang = $this->session->userdata("language");
+        $language_abbr = $this->session->userdata("language_abbr");
+        $this->lang->load('category', $lang);
+        //get order array
+        $arrayId = $this->input->post('orderid');
+        foreach ($arrayId as $item) {
+            $cate = $this->input->post("$item");
+            $this->db->set('ordering', $cate);
+            $this->db->where('id', $item);
+            $this->db->update("category_album");
+        }
+        $message = $this->lang->line('SAVE_DATA_SUCCESS');
+        $this->session->set_flashdata(
+        array('message_content' => $message, 'message_type' => "warning"));
+        redirect($this->url('category_album/'));
+    }
+    public function previewphoto ()
+    {
+        $this->_previewphoto();
+    }
 }
-	
 ?>

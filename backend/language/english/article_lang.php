@@ -1,17 +1,18 @@
 <?php 
 $lang['SAVE_DATA_SUCCESS'] = "Save data successful";
-$lang['MAIL_FROM_LBL'] = "From";
-$lang['MAIL_SUBJECT_LBL'] = "Subject";
-$lang['MAIL_BODY_LBL'] = "Content";
-$lang['MAIL_ATTACH_FILE_LBL'] = "Attach";
-$lang['MAIL_ADDRESS_LBL'] = "Email";
-$lang['CONTACT_TITLE'] = "Contact us";
+$lang['TITLE'] = "Title";
+$lang['DESCRIPTION'] = "Description";
+$lang['CONTENT'] = "Content";
+$lang['IMAGE_TITLE'] = "Image";
+$lang['CREATE DATE'] = "Create date";
+$lang['ORDERING'] = "Order";
+$lang['CATEGORY'] = "Category";
 
 /*MANAGE ARTICLE*/
-$lang['INDEX_TITLE_PAGE'] = "Manage Article";
-$lang['TITLE_TITLE'] = "Title";
-$lang['DESCRIPTION_TITLE'] = "Description";
-$lang['CONTENT_TITLE'] = "Content";
+$lang['INDEX_PAGE_TITLE'] = "Manage Article";
+$lang['TITLE'] = "Title";
+$lang['DESCRIPTION'] = "Description";
+$lang['CONTENT'] = "Content";
 $lang['IMAGE_TITLE'] = "Image";
 $lang['DATE_CREATE_TITLE'] = "Create Date";
 $lang['EDIT_TITLE'] = "Edit";
@@ -25,22 +26,19 @@ $lang['ARTICLE_INFO_TITLE'] = "Article Info";
 $lang['ACTIVE_TITLE'] = "Active";
 $lang['UNACTIVE_TITLE'] = "Unactive";
 $lang['SUBMIT_TITLE'] = "Submit";
-/*ADD PAGE*/
-$lang['SAVE_DATA_SUCCESS'] = "Save data successfull";
-
+$lang['ARTICLE_INFO_TITLE'] = "Article infomation";
 $lang['CATEGORY_TITLE'] = "Category";
+$lang['CHOICE_TITLE'] = "--Choise--";
 
+/*CART LIST*/
 $lang['CART_LIST'] = "Cart list";
 $lang['TRANSLATED_STATUS'] = "Translated";
 $lang['TRANSLATE_STATUS'] = "Translate";
 $lang['SAVE_DATA_SUCCESS'] = "Save data successfull";
-
-/* LOAD AJAX LIST*/
-$lang['TITLE_IMPORT'] = "Title";
-$lang['IMAGE_IMPORT'] = "Image";
-$lang['ACTION_IMPORT'] = "Action";
-$lang['IMPORT_LINK'] = "Import to menu";
-$lang['IMPORT_LINK_TITLE'] = "Import Link";
-
-
+$lang['ALL'] = 'All';
+/*SEARCH PAGE*/
+$lang['SEARCH_TITLE_PAGE'] = "Search Product";
+$lang['Translated'] = 'Translated';
+$lang['ORDERING_TITLE'] = 'Ordering';
+$lang['IMPORT_LINK'] = 'Import';
 ?>

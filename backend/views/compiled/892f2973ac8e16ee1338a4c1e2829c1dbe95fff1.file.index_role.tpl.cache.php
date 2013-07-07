@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty 3.1.4, created on 2012-07-30 07:07:36
+<?php /* Smarty version Smarty 3.1.4, created on 2013-03-17 18:47:01
          compiled from "../backend/views/templates/admin\index_role.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:32253501695288c0e41-95856591%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:14241514672150445c8-12871869%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -11,7 +11,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '32253501695288c0e41-95856591',
+  'nocache_hash' => '14241514672150445c8-12871869',
   'function' => 
   array (
   ),
@@ -32,36 +32,36 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   ),
   'has_nocache_code' => true,
   'version' => 'Smarty 3.1.4',
-  'unifunc' => 'content_501695289be88',
+  'unifunc' => 'content_5146721513a17',
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_501695289be88')) {function content_501695289be88($_smarty_tpl) {?><div class="title_page"><h2><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'PAGE_TITLE\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+<?php if ($_valid && !is_callable('content_5146721513a17')) {function content_5146721513a17($_smarty_tpl) {?><div class="title_page"><h2><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'PAGE_TITLE\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </h2></div ><div class="">
-<a href="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+<a href="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 aclrole/add/" class="bt_green"><span class="bt_green_lft"></span><strong>Add new item</strong><span class="bt_green_r"></span></a>
-<a href="#" class="bt_red" onclick="validateDelete('<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'PLEASE_SELECT\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+<a href="#" class="bt_red" onclick="validateDelete('<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'PLEASE_SELECT\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 ');"><span class="bt_red_lft"></span><strong>Delete items</strong><span class="bt_red_r"></span></a></div>
 <div class="clear-div"></div>  
-<form name="adminForm" action="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+<form name="adminForm" action="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 aclrole/delete" method="post">                    
 <table id="rounded-corner" summary="2007 Major IT Companies' Profit">
     <thead>
     	<tr>
         	<th scope="col" class="rounded-company"><input type="checkbox" style='float:left'  onclick="checkAllRow(this);" /></th>
-            <th scope="col" class="rounded"><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_NAME\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <th scope="col" class="rounded"><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_NAME\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </th>
-            <th scope="col" class="rounded"><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_ORDER\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <th scope="col" class="rounded"><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_ORDER\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </th>
-            <th scope="col" class="rounded"><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'EDIT_TITLE\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <th scope="col" class="rounded"><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'EDIT_TITLE\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </th>
-            <th scope="col" class="rounded-q4"><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'DELETE_TITLE\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <th scope="col" class="rounded-q4"><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'DELETE_TITLE\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </th>
         </tr>
     </thead>
@@ -74,7 +74,7 @@ aclrole/delete" method="post">
     </tfoot>
     <tbody>
     
-    <?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php if (isset($_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'])) unset($_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\']);
+    <?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php if (isset($_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'])) unset($_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\']);
 $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'name\'] = \'i\';
 $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'loop\'] = is_array($_loop=$_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
 $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'show\'] = true;
@@ -97,56 +97,56 @@ $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'index_prev\'] = 
 $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'index_next\'] = $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'index\'] + $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'step\'];
 $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'first\']      = ($_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'iteration\'] == 1);
 $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'last\']       = ($_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'iteration\'] == $_smarty_tpl->tpl_vars[\'smarty\']->value[\'section\'][\'i\'][\'total\']);
-?>/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+?>/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 
-    <?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php $_smarty_tpl->tpl_vars[\'START_LOOP\'] = new Smarty_variable($_smarty_tpl->tpl_vars[\'START_LOOP\']->value+1, true, 0);?>/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+    <?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php $_smarty_tpl->tpl_vars[\'START_LOOP\'] = new Smarty_variable($_smarty_tpl->tpl_vars[\'START_LOOP\']->value+1, true, 0);?>/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 
     	<tr>
-        	<td><input type="checkbox" name="id[]" id="c_<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'START_LOOP\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
-" value="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'id\'];?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+        	<td><input type="checkbox" name="id[]" id="c_<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'START_LOOP\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
+" value="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'id\'];?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 " onclick='isChecked(this);' /></td>
-            <td><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'name\'];?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <td><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'name\'];?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </td>
-            <td><?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'roleorder\'];?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <td><?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'roleorder\'];?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 </td>
-            <td><a href="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
-aclrole/add/id/<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'id\'];?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
-"><img src="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <td><a href="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
+aclrole/add/id/<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'id\'];?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
+"><img src="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 images_admin/user_edit.png" alt="" title="" border="0" /></a></td>
-            <td><a href="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
-aclrole/delete/id/<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'id\'];?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
-" class="ask"><img src="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+            <td><a href="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
+aclrole/delete/id/<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'ROLE_LIST\']->value[$_smarty_tpl->getVariable(\'smarty\')->value[\'section\'][\'i\'][\'index\']][\'id\'];?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
+" class="ask"><img src="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'imagePath\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 images_admin/trash.png" alt="" title="" border="0" /></a></td>
         </tr>
-        <?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php endfor; endif; ?>/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+        <?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php endfor; endif; ?>/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 
     </tbody>
 </table>
-	 <a href="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+	 <a href="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'baseUrl\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 aclrole/add/" class="bt_green"><span class="bt_green_lft"></span><strong>Add new item</strong><span class="bt_green_r"></span></a>
-     <a href="#" class="bt_red" onclick="validateDelete('<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'PLEASE_SELECT\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+     <a href="#" class="bt_red" onclick="validateDelete('<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'PLEASE_SELECT\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 ');"><span class="bt_red_lft"></span><strong>Delete items</strong><span class="bt_red_r"></span></a>
-     <input type="hidden" id="number_row" name="number_row" value="<?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'NUM_ROW\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+     <input type="hidden" id="number_row" name="number_row" value="<?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'NUM_ROW\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 "/>
      <input type="hidden" value="0" name="boxchecked"> 
  </form>    
      
         <div class="pagination">
-        <?php echo '/*%%SmartyNocache:32253501695288c0e41-95856591%%*/<?php echo $_smarty_tpl->tpl_vars[\'PAGINATION_STRING\']->value;?>
-/*/%%SmartyNocache:32253501695288c0e41-95856591%%*/';?>
+        <?php echo '/*%%SmartyNocache:14241514672150445c8-12871869%%*/<?php echo $_smarty_tpl->tpl_vars[\'PAGINATION_STRING\']->value;?>
+/*/%%SmartyNocache:14241514672150445c8-12871869%%*/';?>
 
         
         </div> 

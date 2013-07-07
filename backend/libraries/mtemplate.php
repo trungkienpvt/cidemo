@@ -23,6 +23,7 @@ class MTemplate extends CI_Controller
 //    	//check language key
 		global $URI, $CFG;
 		$config =& $CFG->config;
+		$arrLang = & $CFG->item ( 'lang_uri_abbr' );
         $index_page    = $config['index_page'];
         $this->index_page = $index_page;
         $defaultAbbr  = $config['language_abbr'];
@@ -33,7 +34,6 @@ class MTemplate extends CI_Controller
         	$langAbbr = $arrConfig['language'] ;
         	$language = $arrConfig['lang'] ;
         }
-        
         else
         {
         	$langAbbr = $defaultAbbr;
@@ -42,7 +42,21 @@ class MTemplate extends CI_Controller
         $this->lang_uri_abbr = $langAbbr;
         $this->language = $language;
         $array_path=array();
-    	if($langAbbr != $defaultAbbr )
+        //check to language search
+       	$langSearch = $this->input->post('language_search');
+       	if(isset($langSearch)){
+       		$return = 0;
+       		foreach($arrLang as $key=>$value){
+       			
+       			if($value == $langSearch){
+       				$langAbbr = $key;
+       				$return = 1;
+       			}
+       			if($return==1)
+       				break;
+       		}
+       	}
+       	if($langAbbr != $defaultAbbr )
     	{
     		if(!empty($index_page))
     		{
@@ -53,8 +67,6 @@ class MTemplate extends CI_Controller
     		{
     			$this->baseUrl = $this->config->item('base_url') . "backend" . '/' . $langAbbr . '/';
     		}
-    		
-    		
     	}
     	else {
     		if(!empty($index_page)) {
@@ -67,6 +79,9 @@ class MTemplate extends CI_Controller
     	}
     	$lang = $this->uri->segment(1);
 		if(isset($lang) && strlen($lang) == 2){
+			if($lang!= $langAbbr){
+			}
+				
 			$this->middle = $lang . '/'; 
 			$this->activeLink = $this->uri->segment(2);  
 		}
@@ -74,6 +89,7 @@ class MTemplate extends CI_Controller
 			$this->middle = ""; 
 			$this->activeLink = $this->uri->segment(1);
 		}    	
+//		die($this->baseUrl);
 		$this->basePath = $this->config->item('base_url');
 		$this->cssPath=$this->config->item('themes_css');
 		$this->jsPath=$this->config->item('themes_js');
@@ -81,38 +97,13 @@ class MTemplate extends CI_Controller
 		$this->imageUpload=$this->config->item('image_upload_link');
 		return true;
     }
-    public function preView()
-    {
-    	global $URI, $CFG;
-		$this->load->library('smarty');
-		
-		$smarty = new CI_Smarty();
-		$smarty->setTemplate($this->_template);
-		//$smarty->force_compile = true;
-		$smarty->debugging = false;
-		$smarty->caching = true;
-		$smarty->cache_lifetime = 120;
-		//get menu top
+
+	//get data for template
+    public function getData(){
+		$this->lang->load('menu_top', $this->language);
+		$this->lang->load('language', $this->language);
 		$this->load->model('MMenu');
-		$cssPath = $this->config->item('themes_css');
-		$jsPath = $this->config->item('themes_js');
-		$imagePath = $this->config->item('themes_image');
-		$imageUpload = $this->imageUpload;
-		$base_url = $this->baseUrl;
-		$base_admin = $this->baseAdminPath;
-		$data=array();
-		$data['cssPath'] = $this->cssPath;
-		$data['jsPath'] = $this->jsPath;
-		$data['menutop'] = $this->MMenu->showMenu('menus');
-		$menuTop=$this->load->view("templates/$this->_template/menutop", $data, true);
-		$smarty->assign('baseUrl',$this->baseUrl,true);
-		$smarty->assign('basePath',$this->basePath,true);
-		$smarty->assign('cssPath',$cssPath,true);
-		$smarty->assign('jsPath',$jsPath,true);
-		$smarty->assign('imagePath',$imagePath,true);
-		$smarty->assign('imageUpload',$imageUpload,true);
-		$smarty->assign('menutop',$menuTop,true);
-		//load block data
+		//load block
 		$arrConfig = array();
 		$arrConfig['basePath'] = $this->basePath;
 		$arrConfig['base_url'] = $this->baseUrl;
@@ -124,55 +115,34 @@ class MTemplate extends CI_Controller
 		$arrConfig['activeLink'] = $this->activeLink;
 		$arrConfig['middle_link'] = $this->middle;
 		$arrConfig['objLang'] = $this->lang;
-//		print_r($arrConfig['objLang']);exit;
+		$arrConfig['COUNT_ITEM_CART'] = $this->config->item('count_cart');
     	if($this->current_language) {
     		$arrConfig['language_abbr'] = $this->lang_uri_abbr;
-			
 		}
 		else {
 			$arrConfig['language_abbr'] = '';
 		}
 		//load blocks		
 		$objBlock = new Block();
-		$objBlock->menuTop($arrConfig, $smarty);
-		$objBlock->menuLeft($arrConfig, $smarty);
-		$objBlock->menuRight($arrConfig, $smarty);
-		$objBlock->rightHeader($arrConfig, $smarty);
-		$smarty->assign("MESSAGE_SYSTEM_CONTENT",$this->config->item('message_content'),true);
-		$smarty->assign("MESSAGE_SYSTEM_TYPE",$this->config->item('message_type'),true);
-		return $smarty;
-		
-	}
-	//load ajax view
-	public function loadAjax()
-	{
-		global $URI, $CFG;
-		$this->load->library('smarty');
-		$smarty = new CI_Smarty();
-		$smarty->setTemplate($this->_template);
-		//$smarty->force_compile = true;
-		$smarty->debugging = false;
-		$smarty->caching = true;
-		$smarty->cache_lifetime = 120;
-		//get menu top
-		$this->load->model('MMenu');
-		$cssPath = $this->config->item('themes_css');
-		$jsPath = $this->config->item('themes_js');
-		$imagePath = $this->config->item('themes_image');
-		$imageUpload = $this->imageUpload;
-		$base_url = $this->basePath;
-		$base_admin = $this->baseAdminPath;
-		$data=array();
-		$smarty->assign('baseUrl',$base_url,true);
-		$smarty->assign('baseAdmin',$base_admin,true);
-		$smarty->assign('cssPath',$cssPath,true);
-		$smarty->assign('jsPath',$jsPath,true);
-		$smarty->assign('imagePath',$imagePath,true);
-		$smarty->assign('imageUpload',$imageUpload,true);
-		return $smarty;
-		
-	}
-	
+		$arrData = array();
+		$arrData['HEADER'] = $objBlock->header($arrConfig);
+		$arrData['MENU_TOP'] = $objBlock->menuTop($arrConfig);
+		$arrData['LEFT_CONTENT'] = $objBlock->menuLeft($arrConfig);
+		$arrData['MIDDLE_LINK'] = $this->middle;
+		//add global variable
+		$arrData['basePath'] = $this->basePath;
+		$arrData['base_url'] = $this->baseUrl;
+		$arrData['cssPath'] = $this->cssPath;
+		$arrData['jsPath'] = $this->jsPath;
+		$arrData['imagePath'] = $this->imagePath;
+		$arrData['imageUpload'] = $this->imageUpload;
+		//get user access info
+		$arrData['ITEM_TITLE'] = $this->lang->line("ITEM_TITLE");
+		$arrData['MESSAGE_SYSTEM_CONTENT'] = $this->config->item('message_content');
+		$arrData['MESSAGE_SYSTEM_TYPE'] = $this->config->item('message_type');
+		$arrData['ERROR_VALIDATE_MESSAGE'] = $this->config->item('arrErrorMessage');
+		return $arrData;
+    }
 
 }
 ?>

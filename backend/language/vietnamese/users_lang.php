@@ -21,4 +21,5 @@ $lang['ERROR_MESSAGE_UPLOAD'] = "Tải hình thât bại. Vui lòng thực hiệ
 $lang['PLEASE_SELECT'] = "Vui lòng chọn đối tượng để thao tác";
 $lang['TITL_PAGE'] = "Quản lý người dùng";
 $lang['ROLE_TITLE'] = "Nhóm";
+$lang['Save'] = "Lưu";
 ?>

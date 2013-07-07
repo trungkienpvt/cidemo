@@ -7,13 +7,10 @@
 |
 | URL to your CodeIgniter root. Typically this will be your base URL,
 | WITH a trailing slash:
-|
 |	http://example.com/
-|
-| If this is not set then CodeIgniter will guess the protocol, domain and
+|| If this is not set then CodeIgniter will guess the protocol, domain and
 | path to your installation.
-|
-*/
+|*/
 /*config error message*/
 $config['message_sytem'] = "";
 $config['message_type'] = "";
@@ -27,14 +24,14 @@ $config['lang_uri_abbr'] = array( "en" => "english", "vi" => "vietnamese");
 $config['lang_ignore'] = TRUE; 
 $config['current_language'] = FALSE;
 /*end config multiple language*/
-$config['base_url']	= 'http://ciapp/';
+$config['base_url']	= 'http://localhost/ciapp/';
 $config['themes']	= 'admin';
-$config['themes_css']	= $config['base_url']."assets/css/";
-$config['themes_js']	= $config['base_url']."assets/js/";
-$config['themes_image']	= $config['base_url']."assets/images/";
+$config['themes_css']	= $config['base_url']."assets/backend/css/";
+$config['themes_js']	= $config['base_url']."assets/backend/js/";
+$config['themes_image']	= $config['base_url']."assets/backend/images/";
 $config['library_path']	= $config['base_url']."application/libraries/";
 $config['system_font']	= $config['base_url']."system/fonts/";
-$config['limit_of_page']	= 5;
+$config['limit_of_page']	= 20;
 /*==================== CONFIG IMAGE =================*/
 $config['image_thumb_width']	= 100;
 $config['image_thumb_height']	= 100;
@@ -105,8 +102,8 @@ $config['smtp_pass'] = 'googletk11';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
-//$config['index_page'] = '';
+//$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

@@ -8,43 +8,47 @@ class Article extends Front_Controller
     public function aboutus()
     {
     	$this->load->library("Zend");
+    	$this->load->model('Model_Article');
+		$this->load->model('Model_Category_Article');
     	$langCurrent = $this->session->userdata("language");
 		$langDefault = $this->config->item('language');
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
 		$limitPerPage=$this->config->item('limit_of_page');
-//		die($this->config->item('error_message'));
-		$this->load->model('Model_Article');
-		$this->load->model('Model_Category_Article');
 		//get rid of category about us
 		$wheres = array();
 		$wheres['language ='] = "english";
-	 	$wheres['catName ='] = "About Us";
+	 	$wheres['name ='] = "About Us";
 	 	$objCategoryArticle = new Model_Category_Article();
 		$cateTMP = $objCategoryArticle->getItem($wheres);
 		$cateInfo = $objCategoryArticle->getItemByRID($cateTMP['rid'], $langCurrent, $langDefault);
 		//get article about us
 		$whereArticle = array();
-		$whereArticle['idCategory'] = $cateInfo['idCategory'];
+		$whereArticle['category'] = $cateInfo['id'];
 		$articleInfo = $this->Model_Article->getItem($whereArticle);
+		//check exist data
+		if(empty($articleInfo))
+			redirect('/my404', 'refresh');
 		$lang = $this->uri->segment(1);
 		if($language_abbr != $this->config->item('language_abbr'))
 			$middle = $language_abbr . '/';
 		else
 			$middle = '';
-		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
+		$this->load->library('mtemplate',array('language' =>$language_abbr, "lang" =>$langCurrent));
 		$this->load->library('my_utility');
-		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$view->assign('title_page',$articleInfo['title'],true);
-		$view->assign('layout_content','about-us.tpl',true);
-		$view->assign('ARTICLE_DATA', $articleInfo, true);
-		//Load language key
-		$view->assign('PAGE_TITLE',$this->lang->line('PRODUCT_DETAIL'),true);
-		$view->assign('PLEASE_SELECT',$this->lang->line('PLEASE_SELECT'),true);
-		$view->assign('MENU_LEFT',1,true);
-		$view->assign('LANGUAGE_ABBR',$middle,true);
-		$view->display('index.tpl');
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['PREDATA'] = $preData;
+		$data['ARTICLE'] = $articleInfo;
+		$data['PAGE_TITLE'] = $this->lang->line('About Us');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['CLICK_TO_FULL_IMAGE'] = $this->lang->line('CLICK_TO_FULL_IMAGE');
+		$data['CONTACT_TEXT'] = $this->lang->line('CONTACT_TEXT');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('middle');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/about-us", 
+		$data, true);
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);	
+	
     
     }
     
@@ -53,6 +57,9 @@ class Article extends Front_Controller
 		$langDefault = $this->config->item('language');
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
+		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
+		$this->load->library('my_utility');
+		$this->load->library("StringUtility");
 		$limitPerPage=$this->config->item('limit_of_page');
 //		die($this->config->item('error_message'));
 		$this->load->model('Model_Article');
@@ -82,40 +89,27 @@ class Article extends Front_Controller
 		}
 		//get list another article 
 		$wheres = array();
-		$wheres['language ='] = "english";
-	 	$wheres['catName ='] = "About Us";
-	 	$objCategoryArticle = new Model_Category_Article();
-		$cateTMP = $objCategoryArticle->getItem($wheres);
-		$cateInfo = $objCategoryArticle->getItemByRID($cateTMP['rid'], $langCurrent, $langDefault);
-		//get article not about us
-		$whereArticle = array();
-		$whereArticle['article.rid <>'] = $cateInfo['rid'];
-		$whereArticle['article.language ='] = $langCurrent;
-		$articleList = $this->Model_Article->getList("article.*",0,0, $whereArticle);
-		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
-		$this->load->library('my_utility');
+		$wheres['article.language ='] = $langCurrent;
+		$modelArticle = new Model_Article();
+		$articleList = $modelArticle->getList("article.*",0,0, $wheres);
 		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$this->load->library("StringUtility");
 		$objString = new StringUtility();
-		$data = array();
-		$data['obj_string'] = $objString;
-		$data['imagePath'] = $this->config->item('themes_image');
-		$data['imageUpload'] = $this->config->item('image_upload_link');
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['PREDATA'] = $preData;
 		$data['article_list'] = $articleList;
-		$data['baseUrl'] = $this->mtemplate->baseUrl;
-		$articleData = $this->load->view("templates/" . $this->mtemplate->_template . "/more-article", 
+		$articleData = $this->load->view("templates/" . $this->mtemplate->_template . "/more-article",
 		$data, true);
-		$view->assign('title_page','News',true);
-		$view->assign('layout_content', 'article.tpl', true);
-		$view->assign('ARTICLE_LIST', $articleData, true);
-		//Load language key
-		$view->assign('PAGE_TITLE',$this->lang->line('PRODUCT_DETAIL'),true);
-		$view->assign('MENU_LEFT',1,true);
-		$view->assign('LANGUAGE_ABBR',$middle,true);
-		$view->assign('MIDDLE_LINK', $middle, true);
-		$view->display('index.tpl');
-    
+		$data['ARTICLE'] = $articleData;
+		$data['PAGE_TITLE'] = $this->lang->line('About Us');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['CLICK_TO_FULL_IMAGE'] = $this->lang->line('CLICK_TO_FULL_IMAGE');
+		$data['CONTACT_TEXT'] = $this->lang->line('CONTACT_TEXT');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('middle');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/article",
+		$data, true); 
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
+		    
     }
     
     function detail(){
@@ -123,6 +117,9 @@ class Article extends Front_Controller
 		$langDefault = $this->config->item('language');
 		$language_abbr = $this->session->userdata("language_abbr");
 		$this->lang->load('product', $langCurrent);
+		$this->load->library('my_utility');
+		$this->load->library("StringUtility");
+		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
 		$limitPerPage=$this->config->item('limit_of_page');
 //		die($this->config->item('error_message'));
 		$this->load->model('Model_Article');
@@ -151,50 +148,34 @@ class Article extends Front_Controller
 				$middle = '';
 		}
 		//get article info by rid
-		$articleInfo = $this->Model_Article->getItemByRID($rid, $langCurrent, $langDefault);
-		//get list another article 
-		$wheres = array();
-		$wheres['language ='] = "english";
-	 	$wheres['catName ='] = "About Us";
-	 	$objCategoryArticle = new Model_Category_Article();
-		$cateTMP = $objCategoryArticle->getItem($wheres);
-		$cateInfo = $objCategoryArticle->getItemByRID($cateTMP['rid'], $langCurrent, $langDefault);
-		//get article not about us
+		$modelArticle = new Model_Article();
+		$articleInfo = $modelArticle->getItemByRID($rid, $langCurrent, $langDefault);
+		//get more acticle
 		$whereArticle = array();
-		$whereArticle['article.idCategory <>'] = $cateInfo['idCategory'];
+		$whereArticle['article.category'] = $articleInfo['category'];
 		$whereArticle['article.rid <>'] = $rid;
-		$whereArticle['article.language ='] = $langCurrent;
-		$articleList = $this->Model_Article->getList("article.*",0,0, $whereArticle);
-		
-		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
-		$this->load->library('my_utility');
+		$whereArticle['article.language'] = $langCurrent;
+		$listData = $modelArticle->getList("article.*",0,0, $whereArticle);
 		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->preView();
-		$this->load->library("StringUtility");
 		$objString = new StringUtility();
-		$data = array();
-		$data['obj_string'] = $objString;
-		$data['imagePath'] = $this->config->item('themes_image');
-		$data['imageUpload'] = $this->config->item('image_upload_link');
-		$data['article_list'] = $articleList;
-		$data['baseUrl'] = $this->mtemplate->baseUrl;
-		$articleData = $this->load->view("templates/" . $this->mtemplate->_template . "/more-article", 
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['PREDATA'] = $preData;
+		$data['article_list'] = $listData;
+		$articleList = $this->load->view("templates/" . $this->mtemplate->_template . "/more-article", 
 		$data, true);
-		$view->assign('MORE_ARITCLE',$articleData,true);
-		$view->assign('title_page',$articleInfo['title'],true);
-		$view->assign('layout_content','article-detail.tpl',true);
-		$view->assign('ARTICLE_DATA', $articleInfo, true);
-		$view->assign('ARTICLE_LIST', $articleList, true);
-		//Load language key
-		$view->assign('PAGE_TITLE',$this->lang->line('PRODUCT_DETAIL'),true);
-		$view->assign('MENU_LEFT',1,true);
-		$view->assign('LANGUAGE_ABBR',$middle,true);
-		$view->assign('MIDDLE_LINK', $middle, true);
-		$view->display('index.tpl');
+		$data['ARTICLE'] = $articleInfo;
+		$data['MORE_ARTICLE'] = $articleList;
+		$data['PAGE_TITLE'] = $this->lang->line('About Us');
+		$data['TITLE_TITLE'] = $this->lang->line('TITLE_TITLE');
+		$data['CLICK_TO_FULL_IMAGE'] = $this->lang->line('CLICK_TO_FULL_IMAGE');
+		$data['CONTACT_TEXT'] = $this->lang->line('CONTACT_TEXT');
+		$data['LANGUAGE_ABBR'] = $this->lang->line('middle');
+		$data['layout_content']= $this->load->view("templates/" . $this->mtemplate->_template . "/article-detail",
+		$data, true); 
+		$this->load->view("templates/" . $this->mtemplate->_template . "/index",$data);
     
     }
-    
-    
 	function preview(){
     	$langCurrent = $this->session->userdata("language");
 		$langDefault = $this->config->item('language');
@@ -219,12 +200,14 @@ class Article extends Front_Controller
 		$articleInfo = $this->Model_Article->getItemByRID($rid, $langCurrent, $langDefault);
 		$this->load->library('mtemplate',array('language' =>$language_abbr,"lang" =>$langCurrent));
 		$this->load->library('my_utility');
-		$title_page=$this->lang->line('MANAGE_TITLE_PAGE');
-		$view=$this->mtemplate->loadAjax();
-		$view->assign('ARTICLE_DATA', $articleInfo, true);
-		$view->assign('MIDDLE_LINK', $middle, true);
-		
-		$view->display('article-preview.tpl');
+		$preData = $this->mtemplate->getData();
+		$data= array();
+		$data['PREDATA'] = $preData;
+		$data['ARTICLE_DATA'] = $articleInfo;
+		$data['MIDDLE_LINK'] = $middle;
+		$view = $this->load->view("templates/" . $this->mtemplate->_template . "/article-preview",$data,true);
+		echo $view;
+		exit;
     
     }
     

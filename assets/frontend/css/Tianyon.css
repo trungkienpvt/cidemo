@@ -1,0 +1,51 @@
+/* TolTip */
+.VietAdTooltip
+{
+	text-align:left;
+	position: absolute;
+	width: 400px;	
+	border: 1px solid #4570c5;
+	padding: 2px;
+	background-color:#f0f7ff;
+	visibility: hidden;
+	z-index: 100;
+	/*Remove below line to remove shadow. Below line should always appear last within this CSS*/
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=gray,direction=135);		
+}
+
+.toolTipTitle
+{
+	font-family: Arial; 
+	font-size: 13px; 
+	font-weight: bold; 
+	color: #bd0000;
+}
+
+.toolTipHeader
+{
+	font-family: Arial; 
+	font-size: 13px; 
+	font-weight: bold; 
+	color: #000000; 
+	text-align: right;
+	width: 320px;
+}
+
+.toolTipBody
+{
+	font-family:Arial , Sans-Serif;   
+	font-size: 12px; 
+	font-weight: normal; 
+	color:#000; 
+	text-align: left;
+	width:400px;
+}
+.wraper{
+	width:400px;
+}
+.LargeTime1
+{
+    font-size:10px;
+    font-family:Tahoma;
+    color:#838383;
+}

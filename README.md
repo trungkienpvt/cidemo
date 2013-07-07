@@ -1,4 +1,0 @@
-cidemo
-======
-
-code igniter demo

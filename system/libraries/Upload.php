@@ -467,7 +467,7 @@ class CI_Upload {
 	public function previewPhoto($field = 'userfile', $imagePreviewWidth=0, $imagePreviewHeight=0)
 	{
 		//remove if file exist
-		$mask = PATH_ROOT . DS. 'data' . DS . 'tmp' . DS . '*.*';
+		$mask = PATH_ROOT . 'data' . DS . 'tmp' . DS . '*.*';
    		array_map( "unlink", glob( $mask ) );
 	// Is the upload path valid?
 		if ( ! $this->validate_upload_path())
